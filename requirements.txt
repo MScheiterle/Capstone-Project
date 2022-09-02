@@ -1,0 +1,11 @@
+waitress
+flask[async]
+flask_session
+flask_wtf
+flask_sqlalchemy
+flask-bcrypt
+flask_login
+itsdangerous==2.0.1
+email_validator
+mysql-connector
+sshtunnel

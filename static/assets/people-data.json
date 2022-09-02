@@ -1,0 +1,13 @@
+{
+    "type": "PeopleCollection",
+    "people": [
+        {
+            "text": "FRU",
+            "size": 1.0,
+            "country": "United States",
+            "city": "Mechanicsville",
+            "lat": "38.4429",
+            "lng": "-76.7439"
+        }
+    ]
+}
