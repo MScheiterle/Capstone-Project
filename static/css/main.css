@@ -4,50 +4,9 @@
   --secondary-color: #270082;
   --tertiary-color: #7a0bc0;
   --quaternary-color: #fa58b6;
-  --provider-color-Xbox: #107c10;
-  --provider-color-Playstation: #003791;
-  --provider-color-Steam: #00adee;
 }
 
-html,
 body {
-  margin: 0px;
-  padding: 0px;
-  font-family: "Varela Round", sans-serif;
-  background: var(--primary-color);
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  justify-content: center;
-  color: #fff;
-}
-
-.main-content {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-}
-
-.background {
-  position: absolute;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  justify-content: center;
-}
-
-.homepage-title {
-  font-size: 10vw;
-  position: absolute;
-  top: 0;
-}
-
-body .searchBar {
-  width: min(90vw, 800px);
-  position: absolute;
-  top: 60vh;
+  color: azure;
+  background-color: #050A30;
 }

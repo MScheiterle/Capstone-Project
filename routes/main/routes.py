@@ -1,10 +1,11 @@
-from flask import Blueprint, redirect, render_template, request, url_for, flash
+from flask import Blueprint, redirect, request, url_for, flash
 from flask_login import login_user, current_user, logout_user
-from routes.main.forms import LoginForm, RegistrationForm
+from routes.main.forms import LoginForm, RegistrationForm, RequestResetForm, ResetPasswordForm
 from __init__ import db, bcrypt
 from models import User
+from routes.main.utils import render_template, send_reset_email
 
-main = Blueprint('main', __name__)
+main = Blueprint("main", __name__)
 
 
 @main.route("/", methods=["GET", "POST"])
@@ -14,64 +15,81 @@ async def homepage():
 
 @main.route("/login", methods=["GET", "POST"])
 async def login():
-    try:
-        if current_user.is_authenticated:
-            return redirect(url_for('main.homepage'))
-        form = LoginForm()
-        if form.validate_on_submit():
-            user = User.query.filter_by(username=form.username.data).first()
-            if user and bcrypt.check_password_hash(user.password,
-                                                   form.password.data):
-                login_user(user, remember=form.remember.data)
-                next_page = request.args.get('next')
-                db.session.remove()
-                return redirect(next_page) if next_page else redirect(
-                    url_for('main.homepage'))
-            elif not user:
-                flash('There is no account with that name', 'warning')
-            else:
-                flash('Username and Password do not match', 'warning')
-    except:
-        flash('A database error ocurred', 'error')
-        db.session.rollback()
-    return render_template('login.html', title='Login', form=form)
+    if current_user.is_authenticated:
+        return redirect(url_for("main.homepage"))
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(username=form.username.data).first()
+        if user and bcrypt.check_password_hash(user.password, form.password.data):
+            login_user(user, remember=form.remember.data)
+            next_page = request.args.get("next")
+            db.session.remove()
+            return (
+                redirect(next_page) if next_page else redirect(
+                    url_for("main.homepage"))
+            )
+        elif not user:
+            flash("There is no account with that name", "warning")
+        else:
+            flash("Username and Password do not match", "warning")
+    return render_template("login.html", title="Login", form=form)
 
 
 @main.route("/logout", methods=["GET", "POST"])
 async def logout():
-    try:
-        logout_user()
-    except:
-        db.session.rollback()
-    return redirect(url_for('main.homepage'))
+    logout_user()
+    return redirect(url_for("main.homepage"))
 
 
 @main.route("/register", methods=["GET", "POST"])
 async def register():
-    try:
-        if current_user.is_authenticated:
-            return redirect(url_for('main.homepage'))
-        form = RegistrationForm()
-        if form.validate_on_submit():
-            hashed_password = bcrypt.generate_password_hash(
-                form.password.data).decode('utf-8')
-            user = User(username=form.username.data,
-                        email=form.email.data,
-                        password=hashed_password)
-            db.session.add(user)
-            db.session.commit()
-            return redirect(url_for('main.login'))
-    except:
-        db.session.rollback()
-    return render_template('register.html', title='Register', form=form)
+    if current_user.is_authenticated:
+        return redirect(url_for("main.homepage"))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode(
+            "utf-8"
+        )
+        user = User(
+            username=form.username.data, email=form.email.data, password=hashed_password
+        )
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for("main.login"))
+    return render_template("register.html", title="Register", form=form)
+
+
+@main.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        send_reset_email(user)
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect(url_for('users.login'))
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+
+@main.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('users.reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(
+            form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('users.login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
 
 
 @main.route("/account", methods=["GET", "POST"])
 async def account():
-    try:
-        if not current_user.is_authenticated:
-            flash('Please Log In First', 'error')
-            return redirect(url_for('main.homepage'))
-    except:
-        db.session.rollback()
-    return render_template('account.html', title='Account')
+    if not current_user.is_authenticated:
+        flash("Please Log In First", "error")
+        return redirect(url_for("main.homepage"))
+    return render_template("account.html", title="Account")

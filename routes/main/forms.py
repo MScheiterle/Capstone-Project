@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, EqualTo, ValidationError
+from wtforms.validators import DataRequired, Length, EqualTo, ValidationError, Email
 from flask_login import current_user
 from models import User
 
@@ -8,9 +8,9 @@ from models import User
 class RegistrationForm(FlaskForm):
     """ Define the registartion form """
     username = StringField('Username',
-                        validators=[DataRequired()])
+                           validators=[DataRequired()])
     email = StringField('Email',
-                        validators=[])
+                        validators=[Email()])
     password = PasswordField('Password', validators=[
                              DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password',
@@ -27,6 +27,7 @@ class RegistrationForm(FlaskForm):
     def validate_email(self, email):
         """ Validates that an email is an email """
         if email.data is not '':
+            # All User.query.filter_by need to share a function then check if has tables or not. If it doesnt it needs to call OperationalErrorcreate_dev_tables()
             user = User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError(
@@ -36,7 +37,7 @@ class RegistrationForm(FlaskForm):
 class LoginForm(FlaskForm):
     """ Defines a login form """
     username = StringField('Username',
-                        validators=[DataRequired()])
+                           validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')
     submit = SubmitField('Login')
@@ -49,3 +50,15 @@ class ResetPasswordForm(FlaskForm):
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
+
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError(
+                'There is no account with that email. You must register first.')

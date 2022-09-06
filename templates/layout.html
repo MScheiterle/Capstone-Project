@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     {% if title %}
-    <title>AS - {{ title }}</title>
+    <title>ToDooz</title>
     {% else %}
-    <title>AstralStats</title>
+    <title>ToDooz - {{title}}</title>
     {% endif %}
 
     <!-- Bootstrap CSS CDN -->
@@ -23,16 +23,6 @@
       src="https://kit.fontawesome.com/ade146be62.js"
       crossorigin="anonymous"
     ></script>
-    <!-- Three js -->
-    <script src="//unpkg.com/three"></script>
-    <!-- Three js orbit controls -->
-    <script src="//unpkg.com/three/examples/js/controls/OrbitControls.js"></script>
-    <!-- Three js 3d object laoder -->
-    <script src="//unpkg.com/three/examples/js/loaders/STLLoader.js"></script>
-    <!-- Three globe -->
-    <script src="//unpkg.com/three-globe"></script>
-    <!-- Three globe satellites -->
-    <script src="//unpkg.com/satellite.js/dist/satellite.min.js"></script>
     <!-- Custom CSS -->
     <link
       rel="stylesheet"
@@ -40,41 +30,7 @@
     />
   </head>
   <body>
-    <h1 class="homepage-title">A World of Data</h1>
-    <div class="background">
-      <canvas id="globe"></canvas>
-    </div>
-    <div class="searchBar">
-      <div class="input-group">
-        <div class="input-group-prepend">
-          <select class="input-group-text form-select" id="platformInputNav">
-            <option value="Xbox">Name</option>
-            <option value="Playstation">Gamertag</option>
-          </select>
-        </div>
-        <input
-          id="searchTerm"
-          name="search"
-          type="text"
-          class="form-control"
-          placeholder="Search"
-          aria-label="searchBar"
-          aria-describedby="searchBar"
-        />
-        <div class="input-group-append">
-          <button
-            class="btn btn-secondary"
-            type="submit"
-            id="gamertagSubmitNav"
-          >
-            <i class="fa fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </div>
-    <div style="position: absolute; bottom: 0;">
-      <i class="fa-solid fa-angle-down"></i>
-    </div>
+    {% block content %}{% endblock %}
   </body>
 </html>
 
