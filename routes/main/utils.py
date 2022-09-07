@@ -1,11 +1,13 @@
 import os
 import secrets
-from PIL import Image
-from flask import url_for, current_app
+
+from flask import current_app
+from flask import render_template as real_render_template
+from flask import url_for
 from flask_login import current_user
 from flask_mail import Message
 from models import User
-from flask import render_template as real_render_template
+from PIL import Image
 
 
 def render_template(*args, **kwargs):

@@ -1,12 +1,12 @@
+import os
 import pathlib
 import platform
 import secrets
-import os
-import sshtunnel
-
 # Dev imports
 import sqlite3
 from sqlite3 import Error
+
+import sshtunnel
 
 
 def create_connection(db_file):

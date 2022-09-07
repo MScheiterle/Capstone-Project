@@ -1,8 +1,10 @@
-from flask import Blueprint, redirect, request, url_for, flash
-from flask_login import login_user, current_user, logout_user
-from routes.main.forms import LoginForm, RegistrationForm, RequestResetForm, ResetPasswordForm
-from __init__ import db, bcrypt
+from __init__ import bcrypt, db
+from flask import Blueprint, flash, redirect, request, url_for
+from flask_login import current_user, login_user, logout_user
 from models import User
+
+from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
+                               ResetPasswordForm)
 from routes.main.utils import render_template, send_reset_email
 
 main = Blueprint("main", __name__)
