@@ -44,26 +44,6 @@ span {
   display: inline-block;
 }
 
-.btn-primary,
-.btn-primary:hover,
-.btn-primary:active,
-.btn-primary:visited,
-.btn-primary:focus {
-  background-color: var(--primary-color) !important;
-  border-color: var(--primary-color) !important;
-}
-
-.search-result-container {
-  border-radius: 25px;
-  min-width: 25%;
-  max-width: 33%;
-}
-
-.account-section {
-  background: linear-gradient(var(--primary-color), transparent 90%);
-  border-radius: 25px;
-}
-
 .navbar {
   padding: 0 !important;
 }
@@ -109,13 +89,12 @@ span {
   text-align: left;
 }
 
-#sidebar.active ul li a {
-  padding: 20px 10px;
+#sidebar.active ul.components li a {
   text-align: center;
   font-size: 0.85em;
 }
 
-#sidebar.active ul li a i {
+#sidebar.active ul.components li a i {
   margin-right: 0;
   display: block;
   font-size: 1.8em;
@@ -132,14 +111,12 @@ span {
   transform: translateX(50%);
 }
 
-#sidebar.active ul.CTAs li a {
+#sidebar.active ul.CTAs > li > a {
   width: 40px;
   height: 40px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  padding: 10px;
 }
 
 #sidebar ul.CTAs li {
@@ -151,8 +128,9 @@ span {
 }
 
 #sidebar.active ul.CTAs li a i {
-  width: 25px !important;
-  height: 25px !important;
+  margin: 0;
+  padding: 0;
+  font-size: 1.5em !important;
 }
 
 #sidebar ul.CTAs li a {
@@ -163,12 +141,33 @@ span {
   display: none;
 }
 
+#sidebar.active ul.CTAs li div button span {
+  display: none;
+}
+
+#sidebar.active ul.CTAs li.Account {
+  text-align: left;
+}
+
+#sidebar.active ul.CTAs li.Account div span {
+  display: none;
+}
+
+#sidebar ul.CTAs li.Account div ul.dropdown-menu{
+  font-size: .8em;
+}
+
+.dropend .dropdown-toggle::after {
+  padding-left: 0;
+  margin-left: 0;
+}
+
 #sidebar.active ul.CTAs li div.input-group {
   display: none;
 }
 
 #sidebar ul.CTAs li div.input-group {
-    width: 90%;
+  width: 89%;
 }
 
 #sidebar ul.CTAs li a.github {
@@ -242,6 +241,49 @@ a[aria-expanded="true"]::before {
   content: "\e260";
 }
 
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+  background-color: transparent !important;
+  border-color: transparent !important;
+}
+
+/* ---------------------------------------------------
+    Bootstrap corrections for search bars
+----------------------------------------------------- */
+
+.input-group
+  > .input-group-append:last-child
+  > .btn:not(:last-child):not(.dropdown-toggle),
+.input-group
+  > .input-group-append:last-child
+  > .input-group-text:not(:last-child),
+.input-group > .input-group-append:not(:last-child) > .btn,
+.input-group > .input-group-append:not(:last-child) > .input-group-text,
+.input-group > .input-group-prepend > .btn,
+.input-group > .input-group-prepend > .input-group-text {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.input-group-text[id="userSearchMethod"] {
+  padding-right: 40px;
+}
+
+.input-group > .input-group-append > .btn,
+.input-group > .input-group-append > .input-group-text,
+.input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+.input-group
+  > .input-group-prepend:first-child
+  > .input-group-text:not(:first-child),
+.input-group > .input-group-prepend:not(:first-child) > .btn,
+.input-group > .input-group-prepend:not(:first-child) > .input-group-text {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
 /* ---------------------------------------------------
     CONTENT STYLE
 ----------------------------------------------------- */
@@ -305,9 +347,6 @@ a[aria-expanded="true"]::before {
   }
   #sidebar .sidebar-header strong {
     display: block;
-  }
-  #sidebar ul li a {
-    padding: 20px 10px;
   }
   #sidebar ul li a span {
     font-size: 0.85em;
