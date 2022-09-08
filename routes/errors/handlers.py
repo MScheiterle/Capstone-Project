@@ -1,7 +1,6 @@
 import json
 
 from flask import Blueprint, flash, redirect, render_template, url_for
-from routes.main.utils import render_template
 from werkzeug.exceptions import HTTPException
 
 errors = Blueprint('errors', __name__)

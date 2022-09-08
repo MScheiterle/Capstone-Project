@@ -2,25 +2,15 @@ import os
 import secrets
 
 from flask import current_app
-from flask import render_template as real_render_template
 from flask import url_for
-from flask_login import current_user
 from flask_mail import Message
-from models import User
 from PIL import Image
-
-
-def render_template(*args, **kwargs):
-    """ Takes all return_template calls and ensures they have the user_image
-        I dont know a better way of doing this.
-    """
-    return real_render_template(*args, **kwargs, image_file=user_image())
 
 
 def location(locator, picture_fn):
     if locator == 0:
         picture_path = os.path.join(
-            current_app.root_path, 'static/profile_pics', picture_fn)
+            current_app.root_path, 'static/assets/user_images/', picture_fn)
         output_size = (125, 125)
         return output_size, picture_path
     else:
@@ -77,12 +67,3 @@ def send_reset_email(user):
 '''
 
     mail.send(msg)
-
-
-def user_image():
-    try:
-        image_file = url_for(
-            'static', filename='profile_pics/' + current_user.image_file)
-        return image_file
-    except AttributeError:
-        pass

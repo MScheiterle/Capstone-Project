@@ -1,11 +1,11 @@
 from __init__ import bcrypt, db
-from flask import Blueprint, flash, redirect, request, url_for
+from flask import Blueprint, flash, redirect, request, url_for, render_template
 from flask_login import current_user, login_user, logout_user
 from models import User
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
                                ResetPasswordForm)
-from routes.main.utils import render_template, send_reset_email
+from routes.main.utils import send_reset_email
 
 main = Blueprint("main", __name__)
 
@@ -57,6 +57,8 @@ async def register():
         )
         db.session.add(user)
         db.session.commit()
+        user = User.query.filter_by(username=form.username.data).first()
+        login_user(user)
         return redirect(url_for("main.login"))
     return render_template("register.html", title="Register", form=form)
 
