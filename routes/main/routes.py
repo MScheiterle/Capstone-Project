@@ -4,19 +4,19 @@ from flask_login import current_user, login_user, logout_user
 from models import User
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
-                               ResetPasswordForm)
-from routes.main.utils import send_reset_email
+                               ResetPasswordForm, UpdateAccountInfoForm)
+from routes.main.utils import send_reset_email, save_picture
 
 main = Blueprint("main", __name__)
 
 
 @main.route("/", methods=["GET", "POST"])
-async def homepage():
+def homepage():
     return render_template("homepage.html")
 
 
 @main.route("/login", methods=["GET", "POST"])
-async def login():
+def login():
     if current_user.is_authenticated:
         return redirect(url_for("main.homepage"))
     form = LoginForm()
@@ -38,13 +38,15 @@ async def login():
 
 
 @main.route("/logout", methods=["GET", "POST"])
-async def logout():
+def logout():
+    if not current_user.is_authenticated:
+        return redirect(url_for("main.homepage"))
     logout_user()
     return redirect(url_for("main.homepage"))
 
 
 @main.route("/register", methods=["GET", "POST"])
-async def register():
+def register():
     if current_user.is_authenticated:
         return redirect(url_for("main.homepage"))
     form = RegistrationForm()
@@ -65,6 +67,8 @@ async def register():
 
 @main.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
+    if not current_user.is_authenticated:
+        return redirect(url_for("main.homepage"))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -76,6 +80,8 @@ def reset_request():
 
 @main.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
+    if not current_user.is_authenticated:
+        return redirect(url_for("main.homepage"))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
@@ -92,8 +98,21 @@ def reset_token(token):
 
 
 @main.route("/account", methods=["GET", "POST"])
-async def account():
+def account():
     if not current_user.is_authenticated:
-        flash("Please Log In First", "error")
         return redirect(url_for("main.homepage"))
-    return render_template("account.html", title="Account")
+    form = UpdateAccountInfoForm()
+    if form.validate_on_submit():
+        user = User.query.get(int(current_user.id))
+        if form.picture.data:
+            picture_file = save_picture(form.picture.data, locator=0)
+            user.image_file = picture_file
+        user.username = form.username.data
+        db.session.commit()
+        db.session.remove()
+        flash('Your account has been updated!', 'success')
+        return redirect(url_for('main.account'))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+
+    return render_template('account.html', title='Account Info', form=form)
