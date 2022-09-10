@@ -59,6 +59,7 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
+        db.session.remove()
         user = User.query.filter_by(username=form.username.data).first()
         login_user(user)
         return redirect(url_for("main.login"))
@@ -92,6 +93,7 @@ def reset_token(token):
             form.password.data).decode('utf-8')
         user.password = hashed_password
         db.session.commit()
+        db.session.remove()
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_token.html', title='Reset Password', form=form)
@@ -102,17 +104,32 @@ def account():
     if not current_user.is_authenticated:
         return redirect(url_for("main.homepage"))
     form = UpdateAccountInfoForm()
+    refresh_flag = False;
     if form.validate_on_submit():
         user = User.query.get(int(current_user.id))
         if form.picture.data:
             picture_file = save_picture(form.picture.data, locator=0)
             user.image_file = picture_file
-        user.username = form.username.data
-        db.session.commit()
-        db.session.remove()
-        flash('Your account has been updated!', 'success')
-        return redirect(url_for('main.account'))
+            refresh_flag = True;
+        if form.old_password.data and bcrypt.check_password_hash(user.password, form.old_password.data):
+            if form.new_password.data == form.confirm_password.data:
+                hashed_password = bcrypt.generate_password_hash(
+                    form.new_password.data).decode('utf-8')
+                user.password = hashed_password
+                refresh_flag = True
+        if form.username.data != user.username:
+            user.username = form.username.data
+            refresh_flag = True
+        if form.email.data != user.email:
+            user.email = form.email.data
+            refresh_flag = True
+        if refresh_flag:
+            db.session.commit()
+            db.session.remove()
+            flash('Your account has been updated!', 'success')
+            return redirect(url_for('main.account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
+        form.email.data = current_user.email
 
     return render_template('account.html', title='Account Info', form=form)

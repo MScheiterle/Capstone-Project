@@ -1,6 +1,7 @@
+from __init__ import bcrypt
 from flask_login import current_user
 from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileAllowed
+from flask_wtf.file import FileAllowed, FileField
 from models import User
 from wtforms import BooleanField, PasswordField, StringField, SubmitField
 from wtforms.validators import (DataRequired, Email, EqualTo, Length,
@@ -69,8 +70,13 @@ class RequestResetForm(FlaskForm):
 class UpdateAccountInfoForm(FlaskForm):
     username = StringField('Username',
                            validators=[Length(min=2, max=20)])
+    email = StringField('Email', validators=[Email()])
     picture = FileField('Update Profile Picture', validators=[
-                        FileAllowed(['jpg', 'png'])])
+                        FileAllowed(['jpg', 'png', 'jpeg'])])
+    old_password = PasswordField('Old Password')
+    new_password = PasswordField('New Password')
+    confirm_password = PasswordField('Confirm New Password',
+                                     validators=[EqualTo('new_password')])
     submit = SubmitField('Update')
 
     def validate_username(self, username):
@@ -79,3 +85,24 @@ class UpdateAccountInfoForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'That username is taken. Please choose a different one.')
+
+    def validate_email(self, email):
+        if email.data != current_user.email:
+            user = User.query.filter_by(email=email.data).first()
+            if user:
+                raise ValidationError(
+                    'That email is taken. Please choose a different one.')
+
+    def validate_old_password(self, old_password):
+        if old_password.data and not bcrypt.check_password_hash(current_user.password, old_password.data):
+            raise ValidationError(
+                'That does not match your password')
+
+    def validate_new_password(self, new_password):
+        if self.old_password.data:
+            if not len(new_password.data) >= 8:
+                raise ValidationError(
+                    'Your password must be atleast 8 characters long')
+            if not new_password.data:
+                raise ValidationError(
+                    'You need to input a new password')
