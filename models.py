@@ -22,6 +22,9 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(60), nullable=False)
     image_file = db.Column(db.String(20), nullable=False,
                            default='default.png')
+    motto = db.Column(db.String(200))
+    bio = db.Column(db.String(1000))
+    birthday = db.Column(db.DateTime())
     tasks = db.relationship('Tasks', backref='user', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):

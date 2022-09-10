@@ -46,7 +46,10 @@ def create_dev_tables():
                                         username text NOT NULL UNIQUE,
                                         image_file text NOT NULL DEFAULT 'default.png',
                                         email text UNIQUE,
-                                        password text NOT NULL
+                                        password text NOT NULL,
+                                        motto text,
+                                        bio text,
+                                        birthday DATE
                                     ); """
     sql_create_tasks_table = """CREATE TABLE IF NOT EXISTS tasks (
                                     id integer PRIMARY KEY,
