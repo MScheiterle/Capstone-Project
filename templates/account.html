@@ -16,6 +16,12 @@
         %} {% for error in form.picture.errors %}
         <span class="text-danger">{{ error }}</span>
         {% endfor %} {% endif %}
+        <button
+          class=""
+          style="display: none"
+          id="pictureButton"
+          type="submit"
+        ></button>
       </div>
     </div>
     <div class="info-section">
@@ -38,6 +44,69 @@
           {% else %} {{ form.username(class="form-control") }} {% endif %}
           <div class="input-group-append">
             <button class="btn btn-secondary" id="usernameButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.motto.label }}
+        <div class="form-group motto input-group">
+          {% if form.motto.errors %} {{ form.motto(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="mottoButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.motto.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.motto(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="mottoButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.bio.label }}
+        <div class="form-group bio input-group">
+          {% if form.bio.errors %} {{ form.bio(class="form-control is-invalid")
+          }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="bioButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.bio.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.bio(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="bioButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.birthday.label }}
+        <div class="form-group birthday input-group">
+          {% if form.birthday.errors %} {{ form.birthday(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="birthdayButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.birthday.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.birthday(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="birthdayButton" type="submit">
               <i class="fa-solid fa-check"></i>
             </button>
           </div>
@@ -66,7 +135,14 @@
             </button>
           </div>
         </div>
-        <legend style="margin-top: 2vh">Change Password</legend>
+        <legend style="margin-top: 2vh">
+          Change Password
+          <a
+            style="font-size: x-small"
+            href="{{ url_for('main.reset_request') }}"
+            >Forgot Password</a
+          >
+        </legend>
         {{ form.old_password.label }}
         <div class="form-group old_password input-group">
           {% if form.old_password.errors %} {{
@@ -114,8 +190,22 @@
       </div>
     </div>
   </fieldset>
-  <div id="submitButton" class="form-group">{{ form.submit }}</div>
 </form>
+<div id="originalUserInformation" style="display: none">
+  <input
+    type="text"
+    id="originalusername"
+    value="{{ current_user.username }}"
+  />
+  <input type="text" id="originalmotto" value="{{ current_user.motto }}" />
+  <input type="text" id="originalbio" value="{{ current_user.bio }}" />
+  <input
+    type="text"
+    id="originalbirthday"
+    value="{{ current_user.birthday }}"
+  />
+  <input type="text" id="originalemail" value="{{ current_user.email }}" />
+</div>
 <script type="text/javascript">
   window.addEventListener(
     "keydown",
@@ -129,6 +219,9 @@
           e.target.nodeName == "INPUT" &&
           (e.target.id == "username" ||
             e.target.id == "email" ||
+            e.target.id == "motto" ||
+            e.target.id == "bio" ||
+            e.target.id == "birthday" ||
             e.target.id == "old_password" ||
             e.target.id == "new_password" ||
             e.target.id == "confirm_password")

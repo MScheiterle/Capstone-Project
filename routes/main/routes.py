@@ -1,11 +1,11 @@
 from __init__ import bcrypt, db
-from flask import Blueprint, flash, redirect, request, url_for, render_template
+from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
 from models import User
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
                                ResetPasswordForm, UpdateAccountInfoForm)
-from routes.main.utils import send_reset_email, save_picture
+from routes.main.utils import save_picture, send_reset_email
 
 main = Blueprint("main", __name__)
 
@@ -102,16 +102,16 @@ def reset_token(token):
 @main.route("/account", methods=["GET", "POST"])
 def account():
     if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
+        return redirect(url_for("main.login"))
     form = UpdateAccountInfoForm()
-    refresh_flag = False;
+    refresh_flag = False
     if form.validate_on_submit():
         user = User.query.get(int(current_user.id))
         if form.picture.data:
             picture_file = save_picture(form.picture.data, locator=0)
             user.image_file = picture_file
-            refresh_flag = True;
-        if form.old_password.data and bcrypt.check_password_hash(user.password, form.old_password.data):
+            refresh_flag = True
+        if (form.old_password.data or form.new_password.data or form.confirm_password.data):
             if form.new_password.data == form.confirm_password.data:
                 hashed_password = bcrypt.generate_password_hash(
                     form.new_password.data).decode('utf-8')
@@ -123,6 +123,15 @@ def account():
         if form.email.data != user.email:
             user.email = form.email.data
             refresh_flag = True
+        if form.motto.data != user.motto:
+            user.motto = form.motto.data
+            refresh_flag = True
+        if form.bio.data != user.bio:
+            user.bio = form.bio.data
+            refresh_flag = True
+        if form.birthday.data != user.birthday:
+            user.birthday = form.birthday.data
+            refresh_flag = True
         if refresh_flag:
             db.session.commit()
             db.session.remove()
@@ -131,5 +140,8 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
+        form.motto.data = current_user.motto
+        form.bio.data = current_user.bio
+        form.birthday.data = current_user.birthday
 
     return render_template('account.html', title='Account Info', form=form)

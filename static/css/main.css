@@ -117,6 +117,10 @@ span {
   align-items: center;
 }
 
+#sidebar.active ul.CTAs > li > a:hover {
+  opacity: 70%;
+}
+
 #sidebar ul.CTAs li {
   display: flex;
   justify-content: center;
@@ -335,22 +339,28 @@ form > fieldset div.private-info-section {
 
 form > fieldset > div.info-section {
   padding: 2%;
-  display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-evenly;
 }
 
-form > div[id="submitButton"] {
-  display: none;
-}
-
-div.section input {
+div.section input, div.section textarea {
   border-top-right-radius: .375rem !important;
   border-bottom-right-radius: .375rem !important;
 }
 
+div.section input.changed, div.section textarea.changed {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+div.section div.input-group button  {
+  height: 100% !important;
+}
+
 div.section div button {
   display: none;
+}
+
+legend > a:hover {
+  opacity: 70%;
 }
 
 /* ---------------------------------------------------
@@ -358,9 +368,6 @@ div.section div button {
 ----------------------------------------------------- */
 
 @media (max-width: 768px) {
-  form > fieldset > div.info-section {
-    flex-wrap: wrap;
-  }
   #sidebar {
     min-width: 80px;
     max-width: 80px;
