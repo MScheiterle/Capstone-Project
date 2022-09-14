@@ -1,4 +1,237 @@
-{% extends "layout.html" %}
-{% block content %}
+{% extends "layout.html" %} {% block content %}
 
+<form method="POST" action="" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <div class="account-header">
+      <div class="form-group">
+        <label for="picture" class="rounded-circle"
+          ><img
+            class="rounded-circle"
+            src="/static/assets/user_images/{{ current_user.image_file }}"
+            width="120"
+            height="120"
+        /></label>
+        {{ form.picture(class="form-control-file") }} {% if form.picture.errors
+        %} {% for error in form.picture.errors %}
+        <span class="text-danger">{{ error }}</span>
+        {% endfor %} {% endif %}
+        <button
+          class=""
+          style="display: none"
+          id="pictureButton"
+          type="submit"
+        ></button>
+      </div>
+    </div>
+    <div class="info-section">
+      <div class="public-info-section section">
+        <legend>Public Information</legend>
+        {{ form.username.label }}
+        <div class="form-group username input-group">
+          {% if form.username.errors %} {{ form.username(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="usernameButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.username.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.username(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="usernameButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.motto.label }}
+        <div class="form-group motto input-group">
+          {% if form.motto.errors %} {{ form.motto(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="mottoButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.motto.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.motto(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="mottoButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.bio.label }}
+        <div class="form-group bio input-group">
+          {% if form.bio.errors %} {{ form.bio(class="form-control is-invalid")
+          }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="bioButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.bio.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.bio(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="bioButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.birthday.label }}
+        <div class="form-group birthday input-group">
+          {% if form.birthday.errors %} {{ form.birthday(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="birthdayButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.birthday.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.birthday(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="birthdayButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="private-info-section section">
+        <legend>Private Information</legend>
+        {{ form.email.label }}
+        <div class="form-group email input-group">
+          {% if form.email.errors %} {{ form.email(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="emailButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.email(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="emailButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        <legend style="margin-top: 2vh">
+          Change Password
+          <a
+            style="font-size: x-small"
+            href="{{ url_for('main.reset_request') }}"
+            >Forgot Password</a
+          >
+        </legend>
+        {{ form.old_password.label }}
+        <div class="form-group old_password input-group">
+          {% if form.old_password.errors %} {{
+          form.old_password(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.old_password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.old_password(class="form-control ") }} {% endif %}
+        </div>
+        {{ form.new_password.label }}
+        <div class="form-group new_password input-group">
+          {% if form.new_password.errors %} {{
+          form.new_password(class="form-control is-invalid") }}
+          <div class="invalid-feedback">
+            {% for error in form.new_password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.new_password(class="form-control ") }} {% endif %}
+        </div>
+        {{ form.confirm_password.label }}
+        <div class="form-group confirm_password input-group">
+          {% if form.confirm_password.errors %} {{
+          form.confirm_password(class="form-control is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="confirmButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.confirm_password.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.confirm_password(class="form-control ") }} {% endif
+          %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="confirmButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+</form>
+<div id="originalUserInformation" style="display: none">
+  <input
+    type="text"
+    id="originalusername"
+    value="{{ current_user.username }}"
+  />
+  <input type="text" id="originalmotto" value="{{ current_user.motto }}" />
+  <input type="text" id="originalbio" value="{{ current_user.bio }}" />
+  <input
+    type="text"
+    id="originalbirthday"
+    value="{{ current_user.birthday }}"
+  />
+  <input type="text" id="originalemail" value="{{ current_user.email }}" />
+</div>
+<script type="text/javascript">
+  window.addEventListener(
+    "keydown",
+    function (e) {
+      if (
+        e.keyIdentifier == "U+000A" ||
+        e.keyIdentifier == "Enter" ||
+        e.keyCode == 13
+      ) {
+        if (
+          e.target.nodeName == "INPUT" &&
+          (e.target.id == "username" ||
+            e.target.id == "email" ||
+            e.target.id == "motto" ||
+            e.target.id == "bio" ||
+            e.target.id == "birthday" ||
+            e.target.id == "old_password" ||
+            e.target.id == "new_password" ||
+            e.target.id == "confirm_password")
+        ) {
+          e.preventDefault();
+          return false;
+        }
+      }
+    },
+    true
+  );
+</script>
 {% endblock content %}

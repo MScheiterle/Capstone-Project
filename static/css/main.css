@@ -50,8 +50,6 @@ span {
 
 .container-fluid {
   flex-wrap: nowrap !important;
-  padding-right: 15px !important;
-  padding-left: 0 !important;
 }
 
 /* ---------------------------------------------------
@@ -119,6 +117,10 @@ span {
   align-items: center;
 }
 
+#sidebar.active ul.CTAs > li > a:hover {
+  opacity: 70%;
+}
+
 #sidebar ul.CTAs li {
   display: flex;
   justify-content: center;
@@ -153,8 +155,8 @@ span {
   display: none;
 }
 
-#sidebar ul.CTAs li.Account div ul.dropdown-menu{
-  font-size: .8em;
+#sidebar ul.CTAs li.Account div ul.dropdown-menu {
+  font-size: 0.8em;
 }
 
 .dropend .dropdown-toggle::after {
@@ -254,22 +256,13 @@ a[aria-expanded="true"]::before {
     Bootstrap corrections for search bars
 ----------------------------------------------------- */
 
-.input-group
-  > .input-group-append:last-child
-  > .btn:not(:last-child):not(.dropdown-toggle),
-.input-group
-  > .input-group-append:last-child
-  > .input-group-text:not(:last-child),
-.input-group > .input-group-append:not(:last-child) > .btn,
-.input-group > .input-group-append:not(:last-child) > .input-group-text,
-.input-group > .input-group-prepend > .btn,
 .input-group > .input-group-prepend > .input-group-text {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
 .input-group-text[id="userSearchMethod"] {
-  padding-right: 40px;
+  padding-right: 33px;
 }
 
 .input-group > .input-group-append > .btn,
@@ -297,20 +290,77 @@ a[aria-expanded="true"]::before {
 
 #content {
   min-height: 100vh;
+  max-width: 100vw;
   width: 100vw;
   transition: all 0.3s;
 }
 
 #elements {
-  width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  text-align: center;
   padding: 2%;
 }
 
-.color-on-hover:hover {
-  opacity: 75%;
+div.account-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.account-header > div > input[type="file"] {
+  display: none;
+}
+
+.account-header > div > label > img:hover {
+  transition: all 0.1s;
+  padding: 5px;
+  border: 2px solid var(--quaternary-color);
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
+
+form > fieldset div.section {
+  color: white;
+  border-radius: 5px;
+  padding: 2%;
+  margin: 2%;
+}
+
+form > fieldset div.section > legend {
+  border-bottom: 1px solid white;
+}
+
+form > fieldset div.public-info-section {
+  border: 1px solid white;
+}
+
+form > fieldset div.private-info-section {
+  border: 1px solid red;
+}
+
+form > fieldset > div.info-section {
+  padding: 2%;
+}
+
+div.section input, div.section textarea {
+  border-top-right-radius: .375rem !important;
+  border-bottom-right-radius: .375rem !important;
+}
+
+div.section input.changed, div.section textarea.changed {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+div.section div.input-group button  {
+  height: 100% !important;
+}
+
+div.section div button {
+  display: none;
+}
+
+legend > a:hover {
+  opacity: 70%;
 }
 
 /* ---------------------------------------------------
