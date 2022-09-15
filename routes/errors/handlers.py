@@ -48,5 +48,5 @@ def handle_exception(e):
         "description": e.description,
     })
     response.content_type = "application/json"
-    flash('There was an error on our end, try again and it should work', 'error')
+    flash('There was an error on our end, try again and it should work', 'warning')
     return redirect(url_for('main.homepage'))

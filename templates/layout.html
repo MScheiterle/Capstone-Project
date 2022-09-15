@@ -79,8 +79,16 @@
                 /><span>{{ current_user.username }}</span>
               </button>
               <ul class="dropdown-menu" style="">
-                <li><a class="dropdown-item" href="{{ url_for('main.account') }}">Account</a></li>
-                <li><a class="dropdown-item" href="{{ url_for('main.logout') }}">Logout</a></li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('main.account') }}"
+                    >Account</a
+                  >
+                </li>
+                <li>
+                  <a class="dropdown-item" href="{{ url_for('main.logout') }}"
+                    >Logout</a
+                  >
+                </li>
               </ul>
             </div>
           </li>
@@ -179,11 +187,14 @@
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %}
         <div
-          class="text-center"
+          class="text-center error-bar"
           style="background: var(--secondary-color); color: white"
         >
+          {% if "warning" in category%}
           <i class="fa-solid fa-triangle-exclamation"></i>
-          {{ message }}
+          {% elif "success" in category%}
+          <i class="fa-solid fa-check"></i>
+          {% endif %} {{ message }}
         </div>
         {% endfor %} {% endif %} {% endwith %}
         <div id="elements">{% block content %}{%endblock%}</div>

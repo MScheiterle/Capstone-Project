@@ -363,6 +363,11 @@ legend > a:hover {
   opacity: 70%;
 }
 
+div.error-bar:hover {
+  opacity: 70%;
+  border: transparent;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
