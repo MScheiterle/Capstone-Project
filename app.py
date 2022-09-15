@@ -8,6 +8,7 @@ app = create_app()  # For production environment to call
 
 # For development purposes only
 if __name__ == '__main__':
+    # Deletes dev db if exists, then remakes it with fresh tables
     try:
         create_dev_tables()
     except FileNotFoundError:
