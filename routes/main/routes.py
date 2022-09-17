@@ -12,7 +12,6 @@ main = Blueprint("main", __name__)
 
 @main.route("/", methods=["GET", "POST"])
 def homepage():
-    flash("Flash test", "success")
     return render_template("homepage.html")
 
 
