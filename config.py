@@ -49,7 +49,8 @@ def create_dev_tables():
                                         password text NOT NULL,
                                         motto text,
                                         bio text,
-                                        birthday DATE
+                                        birthday DATE,
+                                        rank text NOT NULL DEFAULT 'user'
                                     ); """
     sql_create_tasks_table = """CREATE TABLE IF NOT EXISTS tasks (
                                     id integer PRIMARY KEY,
