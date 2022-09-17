@@ -41,6 +41,15 @@ input.addEventListener("keypress", function (event) {
     }
   }
 });
+const errors = document.querySelectorAll(".error-bar");
+errors.forEach((error) => {
+  setTimeout(function () {
+    error.remove();
+  }, 3000);
+  error.addEventListener("click", function () {
+    error.remove();
+  });
+});
 picture.oninput = (evt) => {
   const [file] = picture.files;
   if (file) {
