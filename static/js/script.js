@@ -2,33 +2,18 @@ var clicked = Cookies.get("active");
 
 if (clicked == "true" && $("#sidebar").hasClass("active") == false) {
   $("#sidebar").toggleClass("active");
+  $("#sidebarCollapse").toggleClass("active");
 }
 
 $("#sidebarCollapse").on("click", function () {
   $("#sidebar").toggleClass("active");
+  $("#sidebarCollapse").toggleClass("active");
   Cookies.set("active", $("#sidebar").hasClass("active"));
 });
 $("#gamertagSubmit").on("click", function () {
   var search = $("#userSearchTermSideBar").val();
   if ($.trim(search) != "") {
     window.location.href = "/search/@/" + search;
-  }
-});
-$("#gamertagSubmitNav").on("click", function () {
-  var searchMethod = $("#userSearchMethod").val();
-  var search = $("#userSearchTerm").val();
-  if ($.trim(search) != "") {
-    window.location.href = "/search/" + searchMethod + "/" + search;
-  }
-});
-var input = document.getElementById("userSearchTerm");
-input.addEventListener("keypress", function (event) {
-  var search = $("#userSearchTerm").val();
-  if ($.trim(search) != "") {
-    if (event.key === "Enter") {
-      event.preventDefault();
-      document.getElementById("gamertagSubmitNav").click();
-    }
   }
 });
 var input = document.getElementById("userSearchTermSideBar");
@@ -45,7 +30,7 @@ const errors = document.querySelectorAll(".error-bar");
 errors.forEach((error) => {
   setTimeout(function () {
     error.remove();
-  }, 3000);
+  }, 10000);
   error.addEventListener("click", function () {
     error.remove();
   });
