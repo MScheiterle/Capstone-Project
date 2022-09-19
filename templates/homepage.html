@@ -1,3 +1,80 @@
-{% extends "layout.html" %}{% block content %}
-The homepage/landing page of the site
-{%endblock%}
+{% extends "layout.html" %} {% block elements%}
+<div>
+  {% endblock %} {% block content %}
+
+  <div class="homepage">
+    <div class="header">
+      <div class="inner-header flex">
+        <div class="homepage-top">
+          <h1>Welcome To <span>ToDooz!</span></h1>
+        </div>
+
+        <div class="homepage-bottom">
+          {% if not current_user.is_authenticated %}
+          <a href="{{ url_for('main.login') }}" class="item">
+            <i class="fa-solid fa-plus"></i>
+            <h2>Start Creating Tasks Now!</h2>
+          </a>
+          {% else %}
+          <a href="{{ url_for('main.homepage') }}" class="item">
+            <i class="fa-solid fa-list-check"></i>
+            <h2>Your Tasks</h2>
+          </a>
+          {% endif %}
+          <a href="{{ url_for('main.homepage') }}" class="item">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <h2>Search For Other People's Tasks!</h2>
+          </a>
+          <a href="{{ url_for('main.homepage') }}" class="item">
+            <i class="fa-solid fa-chart-pie"></i>
+            <h2>View Global Task Statistics!</h2>
+          </a>
+          <a href="{{ url_for('main.homepage') }}" class="item">
+            <i class="fa-solid fa-medal"></i>
+            <h2>View The Leaderboard!</h2>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <svg
+          class="waves"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28"
+          preserveAspectRatio="none"
+          shape-rendering="auto"
+        >
+          <defs>
+            <path
+              id="gentle-wave"
+              d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+            />
+          </defs>
+          <g class="parallax">
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="0"
+              fill="rgba(255,255,255,0.7"
+            />
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="3"
+              fill="rgba(255,255,255,0.5)"
+            />
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="5"
+              fill="rgba(255,255,255,0.3)"
+            />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+  {%endblock%}
+</div>
