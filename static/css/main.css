@@ -283,6 +283,21 @@ a[aria-expanded="true"]::before {
     CONTENT STYLE
 ----------------------------------------------------- */
 
+.login-bottom {
+  display: flex;
+  padding-top: 10px;
+  flex-direction: column;
+}
+
+.login-bottom .form-check{
+  margin-left: 5px;
+}
+
+small span {
+  font-weight: bold;
+  color: var(--quaternary-color);
+}
+
 .bg-light {
   min-height: 70px;
   height: 9vh;
@@ -321,7 +336,7 @@ div.account-header {
   -webkit-border-radius: 50%;
 }
 
-form > fieldset div.section {
+form > fieldset .section {
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
@@ -331,7 +346,7 @@ form > fieldset div.section {
   margin: 2%;
 }
 
-form > fieldset div.section > legend {
+form > fieldset .section > legend {
   border-bottom: 1px solid white;
 }
 

@@ -40,7 +40,8 @@ def login():
 @main.route("/logout", methods=["GET", "POST"])
 def logout():
     if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
+        flash("You need to be logged in to view this page", "warning")
+        return redirect(url_for("main.login"))
     logout_user()
     return redirect(url_for("main.homepage"))
 
@@ -68,8 +69,8 @@ def register():
 
 @main.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
-    if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
+    if current_user.is_authenticated:
+        return redirect(url_for("main.account"))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -81,8 +82,8 @@ def reset_request():
 
 @main.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
+    if current_user.is_authenticated:
+        return redirect(url_for("main.account"))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
@@ -102,7 +103,9 @@ def reset_token(token):
 @main.route("/account", methods=["GET", "POST"])
 def account():
     if not current_user.is_authenticated:
+        flash("You need to be logged in to view this page", "warning")
         return redirect(url_for("main.login"))
+    flash("Test flash", "success")
     form = UpdateAccountInfoForm()
     refresh_flag = False
     if form.validate_on_submit():
