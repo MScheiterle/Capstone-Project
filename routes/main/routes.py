@@ -105,7 +105,6 @@ def account():
     if not current_user.is_authenticated:
         flash("You need to be logged in to view this page", "warning")
         return redirect(url_for("main.login"))
-    flash("Test flash", "success")
     form = UpdateAccountInfoForm()
     refresh_flag = False
     if form.validate_on_submit():
