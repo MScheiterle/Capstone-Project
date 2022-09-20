@@ -15,6 +15,31 @@ def homepage():
     return render_template("homepage.html")
 
 
+@main.route("/your_tasks", methods=["GET", "POST"])
+def homepage():
+    return render_template("your_tasks.html")
+
+
+@main.route("/task_stats", methods=["GET", "POST"])
+def homepage():
+    return render_template("task_stats.html")
+
+
+@main.route("/leaderboards", methods=["GET", "POST"])
+def homepage():
+    return render_template("leaderboards.html")
+
+
+@main.route("/search/@/<username>", methods=["GET", "POST"])
+def homepage(username: str = ""):
+    return render_template("search.html")
+
+
+@main.route("/account/@/<username>", methods=["GET", "POST"])
+def homepage(username: str = ""):
+    return render_template("user_account.html")
+
+
 @main.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -69,8 +94,6 @@ def register():
 
 @main.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
-    if current_user.is_authenticated:
-        return redirect(url_for("main.account"))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -82,8 +105,6 @@ def reset_request():
 
 @main.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for("main.account"))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
