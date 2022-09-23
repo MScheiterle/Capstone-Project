@@ -15,6 +15,31 @@ def homepage():
     return render_template("homepage.html")
 
 
+@main.route("/your_tasks", methods=["GET", "POST"])
+def homepage():
+    return render_template("your_tasks.html")
+
+
+@main.route("/task_stats", methods=["GET", "POST"])
+def homepage():
+    return render_template("task_stats.html")
+
+
+@main.route("/leaderboards", methods=["GET", "POST"])
+def homepage():
+    return render_template("leaderboards.html")
+
+
+@main.route("/search/@/<username>", methods=["GET", "POST"])
+def homepage(username: str = ""):
+    return render_template("search.html")
+
+
+@main.route("/account/@/<username>", methods=["GET", "POST"])
+def homepage(username: str = ""):
+    return render_template("user_account.html")
+
+
 @main.route("/login", methods=["GET", "POST"])
 def login():
     if current_user.is_authenticated:
@@ -40,7 +65,8 @@ def login():
 @main.route("/logout", methods=["GET", "POST"])
 def logout():
     if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
+        flash("You need to be logged in to view this page", "warning")
+        return redirect(url_for("main.login"))
     logout_user()
     return redirect(url_for("main.homepage"))
 
@@ -68,21 +94,17 @@ def register():
 
 @main.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
-    if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         send_reset_email(user)
-        flash('An email has been sent with instructions to reset your password.', 'info')
+        flash('An email has been sent with instructions to reset your password.', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
 
 
 @main.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):
-    if not current_user.is_authenticated:
-        return redirect(url_for("main.homepage"))
     user = User.verify_reset_token(token)
     if user is None:
         flash('That is an invalid or expired token', 'warning')
@@ -102,6 +124,7 @@ def reset_token(token):
 @main.route("/account", methods=["GET", "POST"])
 def account():
     if not current_user.is_authenticated:
+        flash("You need to be logged in to view this page", "warning")
         return redirect(url_for("main.login"))
     form = UpdateAccountInfoForm()
     refresh_flag = False

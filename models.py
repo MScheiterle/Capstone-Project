@@ -25,6 +25,8 @@ class User(db.Model, UserMixin):
     motto = db.Column(db.String())
     bio = db.Column(db.String())
     birthday = db.Column(db.Date())
+    rank = db.Column(db.String(), nullable=False,
+                     default='user')
     tasks = db.relationship('Tasks', backref='user', lazy=True)
 
     def get_reset_token(self, expires_sec=1800):
