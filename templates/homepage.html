@@ -16,7 +16,13 @@
             <h2>Start Creating Tasks Now!</h2>
           </a>
           {% else %}
-          <a href="{{ url_for('main.homepage') }}" class="item">
+
+
+          <a href="{{ url_for('main.homepage0') }}" class="item">
+            <i class="fa-solid fa-medal"></i>
+            <h2>Create Tasks</h2>
+          </a>
+          <a href="{{ url_for('main.homepage1') }}" class="item">
             <i class="fa-solid fa-list-check"></i>
             <h2>Your Tasks</h2>
           </a>
@@ -25,14 +31,15 @@
             <i class="fa-solid fa-magnifying-glass"></i>
             <h2>Search For Other People's Tasks!</h2>
           </a>
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.homepage3') }}" class="item">
             <i class="fa-solid fa-chart-pie"></i>
             <h2>View Global Task Statistics!</h2>
           </a>
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.homepage3') }}" class="item">
             <i class="fa-solid fa-medal"></i>
             <h2>View The Leaderboard!</h2>
           </a>
+
         </div>
       </div>
 

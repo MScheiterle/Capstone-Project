@@ -5,7 +5,7 @@ from models import User
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
                                ResetPasswordForm, UpdateAccountInfoForm)
-from routes.main.utils import save_picture, send_reset_email
+import routes.main.utils
 
 main = Blueprint("main", __name__)
 
@@ -15,28 +15,33 @@ def homepage():
     return render_template("homepage.html")
 
 
+@main.route("/create_tasks", methods=["GET", "POST"])
+def homepage0():
+    return render_template("create_task.html")
+
+
 @main.route("/your_tasks", methods=["GET", "POST"])
-def homepage():
+def homepage1():
     return render_template("your_tasks.html")
 
 
 @main.route("/task_stats", methods=["GET", "POST"])
-def homepage():
+def homepage2():
     return render_template("task_stats.html")
 
 
 @main.route("/leaderboards", methods=["GET", "POST"])
-def homepage():
+def homepage3():
     return render_template("leaderboards.html")
 
 
 @main.route("/search/@/<username>", methods=["GET", "POST"])
-def homepage(username: str = ""):
+def homepage4(username: str = ""):
     return render_template("search.html")
 
 
 @main.route("/account/@/<username>", methods=["GET", "POST"])
-def homepage(username: str = ""):
+def homepage5(username: str = ""):
     return render_template("user_account.html")
 
 
@@ -97,7 +102,7 @@ def reset_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        send_reset_email(user)
+        routes.main.utils.send_reset_email(user)
         flash('An email has been sent with instructions to reset your password.', 'success')
         return redirect(url_for('users.login'))
     return render_template('reset_request.html', title='Reset Password', form=form)
@@ -131,7 +136,7 @@ def account():
     if form.validate_on_submit():
         user = User.query.get(int(current_user.id))
         if form.picture.data:
-            picture_file = save_picture(form.picture.data, locator=0)
+            picture_file = routes.main.utils.save_picture(form.picture.data, locator=0)
             user.image_file = picture_file
             refresh_flag = True
         if (form.old_password.data or form.new_password.data or form.confirm_password.data):

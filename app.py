@@ -6,7 +6,7 @@ from config import create_dev_tables
 
 app = create_app()  # For production environment to call
 
-# Rey's test comment..
+
 
 # For development purposes only
 if __name__ == '__main__':

@@ -116,3 +116,9 @@ class UpdateAccountInfoForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'That email is taken. Please choose a different one.')
+
+            class TaskForm(FlaskForm):
+                """ Define the registartion form """
+                tasks = StringField('Tasks',
+                                    validators=[DataRequired()])
+                submit = SubmitField('Enter')
