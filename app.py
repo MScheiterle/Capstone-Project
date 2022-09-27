@@ -7,7 +7,6 @@ from config import create_dev_tables
 app = create_app()  # For production environment to call
 
 
-
 # For development purposes only
 if __name__ == '__main__':
     # Deletes dev db if exists, then remakes it with fresh tables

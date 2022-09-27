@@ -16,32 +16,32 @@ def homepage():
 
 
 @main.route("/create_tasks", methods=["GET", "POST"])
-def homepage0():
+def create_task():
     return render_template("create_task.html")
 
 
 @main.route("/your_tasks", methods=["GET", "POST"])
-def homepage1():
+def your_tasks():
     return render_template("your_tasks.html")
 
 
 @main.route("/task_stats", methods=["GET", "POST"])
-def homepage2():
+def task_stats():
     return render_template("task_stats.html")
 
 
 @main.route("/leaderboards", methods=["GET", "POST"])
-def homepage3():
+def leaderboards():
     return render_template("leaderboards.html")
 
 
 @main.route("/search/@/<username>", methods=["GET", "POST"])
-def homepage4(username: str = ""):
+def search(username: str = ""):
     return render_template("search.html")
 
 
 @main.route("/account/@/<username>", methods=["GET", "POST"])
-def homepage5(username: str = ""):
+def user_account(username: str = ""):
     return render_template("user_account.html")
 
 
@@ -136,7 +136,8 @@ def account():
     if form.validate_on_submit():
         user = User.query.get(int(current_user.id))
         if form.picture.data:
-            picture_file = routes.main.utils.save_picture(form.picture.data, locator=0)
+            picture_file = routes.main.utils.save_picture(
+                form.picture.data, locator=0)
             user.image_file = picture_file
             refresh_flag = True
         if (form.old_password.data or form.new_password.data or form.confirm_password.data):
