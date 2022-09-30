@@ -86,7 +86,9 @@ class UpdateAccountInfoForm(FlaskForm):
     username = StringField('Username',
                            validators=[Length(min=2, max=20)])
     email = StringField('Email', validators=[
-                        Optional(), Email(), Length(min=0, max=80)])
+                        Optional(), Email(), Length(min=10, max=80)])
+    secondary_email = StringField('Alternative Email', validators=[
+        Optional(), Email(), Length(min=0, max=80)])
     picture = FileField('Update Profile Picture', validators=[Optional(),
                         FileAllowed(['jpg', 'png', 'jpeg'])])
     motto = TextAreaField('Motto',

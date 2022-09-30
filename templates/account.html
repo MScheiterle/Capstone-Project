@@ -135,6 +135,27 @@
             </button>
           </div>
         </div>
+        {{ form.secondary_email.label }}
+        <div class="form-group secondary_email input-group">
+          {% if form.secondary_email.errors %} {{ form.secondary_email(class="form-control
+          is-invalid") }}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="secondary_emailButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.secondary_email.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.secondary_email(class="form-control") }} {% endif %}
+          <div class="input-group-append">
+            <button class="btn btn-secondary" id="secondary_emailButton" type="submit">
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
         <legend style="margin-top: 2vh">
           Change Password
           <a

@@ -16,27 +16,27 @@ def homepage():
 
 
 @main.route("/your_tasks", methods=["GET", "POST"])
-def homepage():
+def your_tasks():
     return render_template("your_tasks.html")
 
 
 @main.route("/task_stats", methods=["GET", "POST"])
-def homepage():
+def task_stats():
     return render_template("task_stats.html")
 
 
 @main.route("/leaderboards", methods=["GET", "POST"])
-def homepage():
+def leaderboards():
     return render_template("leaderboards.html")
 
 
 @main.route("/search/@/<username>", methods=["GET", "POST"])
-def homepage(username: str = ""):
+def search(username: str = ""):
     return render_template("search.html")
 
 
 @main.route("/account/@/<username>", methods=["GET", "POST"])
-def homepage(username: str = ""):
+def user_account(username: str = ""):
     return render_template("user_account.html")
 
 
@@ -146,6 +146,9 @@ def account():
         if form.email.data != user.email:
             user.email = form.email.data
             refresh_flag = True
+        if form.secondary_email.data != user.secondary_email:
+            user.secondary_email = form.secondary_email.data
+            refresh_flag = True
         if form.motto.data != user.motto:
             user.motto = form.motto.data
             refresh_flag = True
@@ -163,6 +166,7 @@ def account():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
+        form.secondary_email.data = current_user.secondary_email
         form.motto.data = current_user.motto
         form.bio.data = current_user.bio
         form.birthday.data = current_user.birthday

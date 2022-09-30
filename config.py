@@ -46,6 +46,7 @@ def create_dev_tables():
                                         username text NOT NULL UNIQUE,
                                         image_file text NOT NULL DEFAULT 'default.png',
                                         email text UNIQUE,
+                                        secondary_email text UNIQUE,
                                         password text NOT NULL,
                                         motto text,
                                         bio text,

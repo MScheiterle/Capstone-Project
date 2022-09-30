@@ -19,6 +19,7 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True, nullable=False)
     email = db.Column(db.String(), unique=True)
+    secondary_email = db.Column(db.String(), unique=True)
     password = db.Column(db.String(), nullable=False)
     image_file = db.Column(db.String(), nullable=False,
                            default='default.png')
@@ -27,7 +28,7 @@ class User(db.Model, UserMixin):
     birthday = db.Column(db.Date())
     rank = db.Column(db.String(), nullable=False,
                      default='user')
-    tasks = db.relationship('Tasks', backref='user', lazy=True)
+    tasks = db.relationship('Tasks', backref='user')
 
     def get_reset_token(self, expires_sec=1800):
         serialized = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -56,5 +57,4 @@ class Tasks(db.Model):
     start_date = db.Column(db.String(20), nullable=False)
     end_date = db.Column(db.String(20), nullable=False)
     public = db.Column(db.String(20), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'),
-                        nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
