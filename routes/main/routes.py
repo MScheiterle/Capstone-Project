@@ -168,6 +168,9 @@ def account():
         if form.birthday.data != user.birthday:
             user.birthday = form.birthday.data
             refresh_flag = True
+        if form.telephone_number.data != user.telephone_number:
+            user.telephone_number = form.telephone_number.data
+            refresh_flag = True
         if refresh_flag:
             db.session.commit()
             db.session.remove()
@@ -180,5 +183,6 @@ def account():
         form.motto.data = current_user.motto
         form.bio.data = current_user.bio
         form.birthday.data = current_user.birthday
+        form.telephone_number.data = current_user.telephone_number
 
     return render_template('account.html', title='Account Info', form=form)

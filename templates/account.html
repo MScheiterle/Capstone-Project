@@ -137,10 +137,14 @@
         </div>
         {{ form.secondary_email.label }}
         <div class="form-group secondary_email input-group">
-          {% if form.secondary_email.errors %} {{ form.secondary_email(class="form-control
-          is-invalid") }}
+          {% if form.secondary_email.errors %} {{
+          form.secondary_email(class="form-control is-invalid") }}
           <div class="input-group-append">
-            <button class="btn btn-secondary" id="secondary_emailButton" type="submit">
+            <button
+              class="btn btn-secondary"
+              id="secondary_emailButton"
+              type="submit"
+            >
               <i class="fa-solid fa-check"></i>
             </button>
           </div>
@@ -149,9 +153,44 @@
             <span>{{ error }}</span>
             {% endfor %}
           </div>
-          {% else %} {{ form.secondary_email(class="form-control") }} {% endif %}
+          {% else %} {{ form.secondary_email(class="form-control") }} {% endif
+          %}
           <div class="input-group-append">
-            <button class="btn btn-secondary" id="secondary_emailButton" type="submit">
+            <button
+              class="btn btn-secondary"
+              id="secondary_emailButton"
+              type="submit"
+            >
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+        </div>
+        {{ form.telephone_number.label }}
+        <div class="form-group telephone_number input-group">
+          {% if form.telephone_number.errors %} {{
+          form.telephone_number(class="form-control is-invalid") }}
+          <div class="input-group-append">
+            <button
+              class="btn btn-secondary"
+              id="telephone_numberButton"
+              type="submit"
+            >
+              <i class="fa-solid fa-check"></i>
+            </button>
+          </div>
+          <div class="invalid-feedback">
+            {% for error in form.telephone_number.errors %}
+            <span>{{ error }}</span>
+            {% endfor %}
+          </div>
+          {% else %} {{ form.telephone_number(class="form-control") }} {% endif
+          %}
+          <div class="input-group-append">
+            <button
+              class="btn btn-secondary"
+              id="telephone_numberButton"
+              type="submit"
+            >
               <i class="fa-solid fa-check"></i>
             </button>
           </div>
@@ -226,6 +265,16 @@
     value="{{ current_user.birthday }}"
   />
   <input type="text" id="originalemail" value="{{ current_user.email }}" />
+  <input
+    type="text"
+    id="originalsecondary_email"
+    value="{{ current_user.secondary_email }}"
+  />
+  <input
+    type="text"
+    id="originaltelephone_number"
+    value="{{ current_user.telephone_number }}"
+  />
 </div>
 <script type="text/javascript">
   window.addEventListener(

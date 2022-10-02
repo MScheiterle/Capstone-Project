@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
 from models import User
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, TelField
 from wtforms.validators import (DataRequired, Email, EqualTo, Length,
                                 ValidationError, Optional)
 
@@ -97,6 +97,8 @@ class UpdateAccountInfoForm(FlaskForm):
                         validators=[Optional(), Length(min=0, max=1000)])
     birthday = DateField('Birthday',
                          validators=[Optional()])
+    telephone_number = TelField('Telephone Number',
+                                validators=[Optional()], render_kw={"placeholder": "123-4567-8901", "pattern": "[0-9]{3}-[0-9]{3}-[0-9]{4}"})
     old_password = PasswordField('Current Password',
                                  validators=[Optional(), password_validation, Length(min=8)])
     new_password = PasswordField('New Password',
@@ -118,3 +120,10 @@ class UpdateAccountInfoForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'That email is taken. Please choose a different one.')
+
+    def validate_telephone_number(self, telephone_number):
+        if telephone_number.data != current_user.email:
+            user = User.query.filter_by(email=telephone_number.data).first()
+            if user:
+                raise ValidationError(
+                    'That telephone number is taken. Please choose a different one.')

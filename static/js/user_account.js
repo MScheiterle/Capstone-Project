@@ -6,9 +6,11 @@ picture.oninput = (evt) => {
 };
 var originalUsername = originalusername.value;
 var originalEmail = originalemail.value;
+var originalSecondaryEmail = originalsecondary_email.value;
 var originalMotto = originalmotto.value;
 var originalBio = originalbio.value;
 var originalBirthDay = originalbirthday.value;
+var originalTelephoneNumber = originaltelephone_number.value;
 username.oninput = (evt) => {
   if (username.value === originalUsername) {
     document.getElementById("usernameButton").style.display = "none";
@@ -27,6 +29,17 @@ email.oninput = (evt) => {
   if (email.value != originalEmail) {
     document.getElementById("emailButton").style.display = "inline-block";
     email.classList.add("changed");
+  }
+};
+secondary_email.oninput = (evt) => {
+  if (secondary_email.value === originalSecondaryEmail) {
+    document.getElementById("secondary_emailButton").style.display = "none";
+    secondary_email.classList.remove("changed");
+  }
+  if (secondary_email.value != originalSecondaryEmail) {
+    document.getElementById("secondary_emailButton").style.display =
+      "inline-block";
+    secondary_email.classList.add("changed");
   }
 };
 motto.oninput = (evt) => {
@@ -57,6 +70,17 @@ birthday.oninput = (evt) => {
   if (birthday.value != originalBirthDay) {
     document.getElementById("birthdayButton").style.display = "inline-block";
     birthday.classList.add("changed");
+  }
+};
+telephone_number.oninput = (evt) => {
+  if (telephone_number.value === originalTelephoneNumber) {
+    document.getElementById("telephone_numberButton").style.display = "none";
+    telephone_number.classList.remove("changed");
+  }
+  if (telephone_number.value != originalTelephoneNumber) {
+    document.getElementById("telephone_numberButton").style.display =
+      "inline-block";
+    telephone_number.classList.add("changed");
   }
 };
 confirm_password.oninput = (evt) => {

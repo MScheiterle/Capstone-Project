@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     birthday = db.Column(db.Date())
     rank = db.Column(db.String(), nullable=False,
                      default='user')
+    telephone_number = db.Column(db.String())
     tasks = db.relationship('Tasks', backref='user')
 
     def get_reset_token(self, expires_sec=1800):
