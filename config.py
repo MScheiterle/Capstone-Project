@@ -3,6 +3,8 @@ import pathlib
 import platform
 import secrets
 # Dev imports
+from flask_bcrypt import Bcrypt
+import requests
 import sqlite3
 from sqlite3 import Error
 
@@ -25,7 +27,7 @@ def create_connection(db_file):
     return conn
 
 
-def create_table(conn, create_table_sql):
+def execute_sql(conn, sql, *params):
     """ create a table from the create_table_sql statement
     :param conn: Connection object
     :param create_table_sql: a CREATE TABLE statement
@@ -33,9 +35,28 @@ def create_table(conn, create_table_sql):
     """
     try:
         c = conn.cursor()
-        c.execute(create_table_sql)
+        c.execute(sql, params)
     except Error as e:
         print(e)
+
+
+def populate_db(conn):
+    word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
+    response = requests.get(word_site)
+    WORDS = [x.decode('utf-8') for x in response.content.splitlines()]
+
+    bcrypt = Bcrypt()
+
+    for i in range(100):
+        random_username = ''.join(secrets.choice(WORDS) for i in range(3))
+        random_email = f'{random_username}@{random_username}.com'
+        random_password = bcrypt.generate_password_hash(random_username).decode(
+            "utf-8"
+        )
+        execute_sql(
+            conn, "INSERT INTO user(username, email, password) VALUES(?, ?, ?)", random_username, random_email, random_password)
+
+    conn.commit()
 
 
 def create_dev_tables():
@@ -65,12 +86,15 @@ def create_dev_tables():
                                     public text NOT NULL,
                                     FOREIGN KEY (user_id) REFERENCES users (id)
                                 );"""
+
     # Create a database connection
     conn = create_connection(database)
     # Create users table
-    create_table(conn, sql_create_users_table)
+    execute_sql(conn, sql_create_users_table)
     # Create tasks table
-    create_table(conn, sql_create_tasks_table)
+    execute_sql(conn, sql_create_tasks_table)
+
+    populate_db(conn)
 
 
 class Config:
@@ -85,7 +109,7 @@ class Config:
                 username="Simpl1f1ed",
                 password=os.environ.get("DB_PASSOWRD"),
                 hostname="Simpl1f1ed.mysql.pythonanywhere-services.com",
-                databasename="Simpl1f1ed$ToDosDB",
+                databasename="Simpl1f1ed$ToDoosDB",
             )
         else:
             # For dev environment to connect to production DB
@@ -98,7 +122,7 @@ class Config:
 
             tunnel.start()
 
-            SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://Simpl1f1ed:{password}@127.0.0.1:{bind_port}/Simpl1f1ed$ToDosDB'.format(
+            SQLALCHEMY_DATABASE_URI = 'mysql+mysqlconnector://Simpl1f1ed:{password}@127.0.0.1:{bind_port}/Simpl1f1ed$ToDoosDB'.format(
                 password=os.environ.get("DB_PASSOWRD"),
                 bind_port=tunnel.local_bind_port)
     except ValueError:

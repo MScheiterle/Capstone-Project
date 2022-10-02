@@ -195,8 +195,16 @@ span {
   margin-left: 0;
 }
 
-#sidebar.active ul.CTAs li div.input-group {
+#sidebar.active ul.CTAs li.search-bar {
   display: none;
+}
+
+#sidebar ul.CTAs li.search-button {
+  display: none;
+}
+
+#sidebar.active ul.CTAs li.search-button {
+  display: flex;
 }
 
 #sidebar ul.CTAs li div.input-group {
@@ -204,6 +212,11 @@ span {
 }
 
 #sidebar ul.CTAs li a.github {
+  background: #fff;
+  color: #333333;
+}
+
+#sidebar ul.CTAs li a.search {
   background: #fff;
   color: #333333;
 }
@@ -343,8 +356,11 @@ small span {
 }
 
 #elements {
+  font-weight: 80;
+  font-size: large;
+  color: #fff;
   padding: 2%;
-  margin-top: 5vh;
+  margin-top: 80px;
 }
 
 div.account-header {
@@ -473,6 +489,17 @@ ul.dropdown-menu {
   position: absolute;
 }
 
+.search-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.search-page-bar {
+  width: 80%;
+}
+
 /* ---------------------------------------------------
     MEDIAQUERIES
 ----------------------------------------------------- */
@@ -531,13 +558,13 @@ ul.dropdown-menu {
     height: 40px;
     min-height: 40px;
   }
-  .homepage-bottom > div.item {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-  }
-  #sidebarCollapse {
+  #sidebarCollapse.deactive {
     left: 20px;
+  }
+
+  #sidebar.deactive {
+    animation: none;
+    display: none;
   }
 }
 
@@ -576,12 +603,17 @@ ul.dropdown-menu {
   color: var(--quaternary-color);
 }
 
-.homepage-bottom {
+.item-container {
   width: 80%;
   padding-top: 5%;
 }
 
-.homepage-bottom .item {
+.item-container {
+  width: 80%;
+  padding-top: 5%;
+}
+
+.item {
   display: flex;
   align-items: center;
   padding: 10px;
@@ -591,25 +623,42 @@ ul.dropdown-menu {
   border-radius: 10px;
 }
 
-.homepage-bottom .item:hover {
+.item img {
+  border-radius: 10px;
+}
+
+.result-item {
+  padding: 0;
+}
+
+.result-info {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.item:hover {
   opacity: 70%;
 }
 
-.homepage-bottom .item > h2 {
+.item h2 {
+  overflow: hidden;
   padding: 10px;
   margin: 0;
   font-size: 100%;
 }
 
-.homepage-bottom .item:nth-child(2n + 1) {
+.item:nth-child(2n + 1) {
   background: linear-gradient(to right, rgba(255, 255, 255, 0.25), transparent);
   display: flex;
+  text-align: start;
   flex-direction: row;
 }
 
-.homepage-bottom .item:nth-child(2n + 2) {
+.item:nth-child(2n + 2) {
   background: linear-gradient(to left, rgba(255, 255, 255, 0.25), transparent);
   display: flex;
+  text-align: end;
   flex-direction: row-reverse;
 }
 

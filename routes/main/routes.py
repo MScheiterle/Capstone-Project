@@ -1,3 +1,5 @@
+from cgitb import text
+from urllib.parse import uses_relative
 from __init__ import bcrypt, db
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
@@ -30,12 +32,20 @@ def leaderboards():
     return render_template("leaderboards.html")
 
 
-@main.route("/search/@/<username>", methods=["GET", "POST"])
+@main.route("/search", methods=["GET", "POST"])
+@main.route("/search/<username>", methods=["GET", "POST"])
 def search(username: str = ""):
+    if username:
+        users = User.query.filter(User.username.like(
+            '%' + username + '%')).limit(10).all()
+        if users:
+            return render_template("search.html", users=users)
+        else:
+            flash("No one with that username exists", "warning")
     return render_template("search.html")
 
 
-@main.route("/account/@/<username>", methods=["GET", "POST"])
+@main.route("/account/<username>", methods=["GET", "POST"])
 def user_account(username: str = ""):
     return render_template("user_account.html")
 

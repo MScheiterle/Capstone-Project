@@ -51,19 +51,19 @@
 
         <ul class="list-unstyled components">
           <li>
-            <a href="{{ url_for('main.homepage') }}">
+            <a href="{{ url_for('main.your_tasks') }}">
               <i class="fa-solid fa-list-check"></i>
               Your Tasks
             </a>
           </li>
           <li>
-            <a href="{{ url_for('main.homepage') }}">
+            <a href="{{ url_for('main.task_stats') }}">
               <i class="fa-solid fa-chart-pie"></i>
               Task Stats
             </a>
           </li>
           <li>
-            <a href="{{ url_for('main.homepage') }}">
+            <a href="{{ url_for('main.leaderboards') }}">
               <i class="fa-solid fa-medal"></i>
               Leader Boards
             </a>
@@ -109,18 +109,7 @@
             >
           </li>
           {% endif %}
-          <li>
-            <a
-              href="https://github.com/MScheiterle/Capstone-Project"
-              target="_blank"
-              class="github"
-              ><i class="fab fa-github"></i
-              ><span
-                >View The Github
-                <i class="fa-solid fa-arrow-up-right-from-square"></i></span
-            ></a>
-          </li>
-          <li>
+          <li class="search-bar">
             <div class="input-group">
               <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">@</span>
@@ -145,6 +134,21 @@
               </div>
             </div>
           </li>
+          <li class="search-button">
+            <a href="{{ url_for('main.search') }}"
+              ><i class="fa fa-search"></i></a>
+          </li>
+          <li>
+            <a
+              href="https://github.com/MScheiterle/Capstone-Project"
+              target="_blank"
+              class="github"
+              ><i class="fab fa-github"></i
+              ><span
+                >View The Github
+                <i class="fa-solid fa-arrow-up-right-from-square"></i></span
+            ></a>
+          </li>
         </ul>
       </nav>
       {% endblock sidebar %}
@@ -157,9 +161,7 @@
         </div>
         {% with messages = get_flashed_messages(with_categories=true) %} {% if
         messages %} {% for category, message in messages %}
-        <div
-          class="error-bar"
-        >
+        <div class="error-bar">
           {% if "warning" in category%}
           <i class="fa-solid fa-triangle-exclamation"></i>
           {% elif "success" in category%}

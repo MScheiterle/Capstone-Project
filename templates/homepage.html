@@ -9,27 +9,27 @@
           <h1>Welcome To <span>ToDooz!</span></h1>
         </div>
 
-        <div class="homepage-bottom">
+        <div class="item-container">
           {% if not current_user.is_authenticated %}
           <a href="{{ url_for('main.login') }}" class="item">
             <i class="fa-solid fa-plus"></i>
             <h2>Start Creating Tasks Now!</h2>
           </a>
           {% else %}
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.your_tasks') }}" class="item">
             <i class="fa-solid fa-list-check"></i>
             <h2>Your Tasks</h2>
           </a>
           {% endif %}
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.search') }}" class="item">
             <i class="fa-solid fa-magnifying-glass"></i>
             <h2>Search For Other People's Tasks!</h2>
           </a>
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.task_stats') }}" class="item">
             <i class="fa-solid fa-chart-pie"></i>
             <h2>View Global Task Statistics!</h2>
           </a>
-          <a href="{{ url_for('main.homepage') }}" class="item">
+          <a href="{{ url_for('main.leaderboards') }}" class="item">
             <i class="fa-solid fa-medal"></i>
             <h2>View The Leaderboard!</h2>
           </a>

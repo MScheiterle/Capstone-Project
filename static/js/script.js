@@ -18,7 +18,9 @@ $("#sidebarCollapse").on("click", function () {
 $("#gamertagSubmit").on("click", function () {
   var search = $("#userSearchTermSideBar").val();
   if ($.trim(search) != "") {
-    window.location.href = "/search/@/" + search;
+    window.location.href = "/search/" + search;
+  } else {
+    window.location.href = "/search";
   }
 });
 var input = document.getElementById("userSearchTermSideBar");

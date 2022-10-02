@@ -1,2 +1,43 @@
-{% extends "layout.html" %} {% block elements%}
-{% endblock %}
+{% extends "layout.html" %} {% block content %}
+<div class="search-page">
+  <div class="input-group search-page-bar">
+    <div class="input-group-prepend">
+      <span class="input-group-text" id="basic-addon1">@</span>
+    </div>
+    <input
+      id="userSearchTermSearchPage"
+      name="search"
+      type="text"
+      class="form-control"
+      placeholder="Username"
+      aria-label="searchUsername"
+      aria-describedby="basic-addon1"
+    />
+    <div class="input-group-append">
+      <button class="btn btn-secondary" type="submit" id="gamertagSubmitMain">
+        <i class="fa fa-search"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="item-container">
+    {% if users %} {% for user in users %}
+    <a
+      href="{{ url_for('main.user_account', username=user.username ) }}"
+      class="result-item item"
+    >
+      <img
+        class=""
+        src="/static/assets/user_images/{{ user.image_file }}"
+        height="100%"
+      />
+      <div class="result-info">
+        <h2>{{ user.username }}</h2>
+      </div>
+    </a>
+    {% endfor %} {% endif %}
+  </div>
+  <!-- Custom Js -->
+  <script src="/static/js/search.js" type="text/javascript"></script>
+  {% endblock %}
+</div>
