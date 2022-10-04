@@ -11,7 +11,7 @@ def location(locator, picture_fn):
     if locator == 0:
         picture_path = os.path.join(
             current_app.root_path, 'static/assets/user_images/', picture_fn)
-        output_size = (125, 125)
+        output_size = (256, 256)
         return output_size, picture_path
     else:
         pass

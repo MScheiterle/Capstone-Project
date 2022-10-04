@@ -59,6 +59,7 @@ span {
 .wrapper {
   display: flex;
   align-items: stretch;
+  overflow-x: hidden;
 }
 
 #sidebar {
@@ -360,10 +361,10 @@ small span {
   font-size: large;
   color: #fff;
   padding: 2%;
-  margin-top: 80px;
+  margin-top: 50px;
 }
 
-div.account-header {
+.account-header {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -452,7 +453,7 @@ ul.dropdown-menu {
   justify-content: center;
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   border-radius: 10px;
-  width: 50%;
+  width: 80%;
   height: 30px;
   background: linear-gradient(
     to bottom,
@@ -463,6 +464,10 @@ ul.dropdown-menu {
   top: 80%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.error-bar i {
+  padding-right: 5px;
 }
 
 .error-bar:hover {
@@ -498,6 +503,12 @@ ul.dropdown-menu {
 
 .search-page-bar {
   width: 80%;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: left;
+  align-items: flex-start;
 }
 
 /* ---------------------------------------------------
@@ -637,15 +648,28 @@ ul.dropdown-menu {
   flex-direction: column;
 }
 
+.result-info h2 {
+  padding: 0 !important;
+}
+
+.task-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
 .item:hover {
   opacity: 70%;
 }
 
 .item h2 {
   overflow: hidden;
-  padding: 10px;
   margin: 0;
   font-size: 100%;
+}
+
+.item i {
+  padding: 5px;
 }
 
 .item:nth-child(2n + 1) {

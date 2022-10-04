@@ -1,3 +1,4 @@
+import datetime
 import os
 import pathlib
 import platform
@@ -47,7 +48,12 @@ def populate_db(conn):
 
     bcrypt = Bcrypt()
 
-    for i in range(100):
+    execute_sql(
+        conn, "INSERT INTO user(username, email, password) VALUES(?, ?, ?)", "test", "test@test.com", bcrypt.generate_password_hash("test").decode(
+            "utf-8"
+        ))
+
+    for x in range(99):
         random_username = ''.join(secrets.choice(WORDS) for i in range(3))
         random_email = f'{random_username}@{random_username}.com'
         random_password = bcrypt.generate_password_hash(random_username).decode(
@@ -55,6 +61,9 @@ def populate_db(conn):
         )
         execute_sql(
             conn, "INSERT INTO user(username, email, password) VALUES(?, ?, ?)", random_username, random_email, random_password)
+        for y in range(3):
+            execute_sql(
+                conn, "INSERT INTO tasks(name, min_value, max_value, value, repeat, start_date, end_date, public, user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", f'task_{y}', 0, 100, 50, 'false', datetime.datetime.now(), datetime.datetime.now(), 'true', x)
 
     conn.commit()
 
@@ -73,7 +82,10 @@ def create_dev_tables():
                                         bio text,
                                         birthday DATE,
                                         rank text NOT NULL DEFAULT 'user',
-                                        telephone_number text
+                                        telephone_number text,
+                                        tasks_completed integer DEFAULT 0,
+                                        tasks_in_progress integer DEFAULT 0,
+                                        tasks_failed integer DEFAULT 0
                                     ); """
     sql_create_tasks_table = """CREATE TABLE IF NOT EXISTS tasks (
                                     id integer PRIMARY KEY,
@@ -81,6 +93,7 @@ def create_dev_tables():
                                     min_value integer NOT NULL,
                                     max_value integer NOT NULL,
                                     value integer NOT NULL,
+                                    repeat text NOT NULL,
                                     user_id integer NOT NULL,
                                     start_date text NOT NULL,
                                     end_date text NOT NULL,

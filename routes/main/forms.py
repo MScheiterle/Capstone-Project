@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
 from models import User
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, TelField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, TelField, DateTimeField
 from wtforms.validators import (DataRequired, Email, EqualTo, Length,
                                 ValidationError, Optional)
 
@@ -127,3 +127,16 @@ class UpdateAccountInfoForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'That telephone number is taken. Please choose a different one.')
+
+
+class CreateTaskForm(FlaskForm):
+    name = StringField('Task Name',
+                       validators=[DataRequired(), Length(min=4, max=100)])
+    repeat = BooleanField('Repeat this task? (Daily, Weekly, Monthly)',
+                          validators=[DataRequired()])
+    start_date = DateTimeField('Start Date',
+                               validators=[DataRequired()])
+    end_date = DateTimeField('End Date',
+                             validators=[DataRequired()])
+    public = BooleanField('Do you want this task to be public?',
+                          validators=[DataRequired()])

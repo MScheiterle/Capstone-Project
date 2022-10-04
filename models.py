@@ -17,18 +17,24 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     __tablename__ = "user"
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(), unique=True, nullable=False)
-    email = db.Column(db.String(), unique=True)
-    secondary_email = db.Column(db.String(), unique=True)
-    password = db.Column(db.String(), nullable=False)
-    image_file = db.Column(db.String(), nullable=False,
+    username = db.Column(db.String, unique=True, nullable=False)
+    email = db.Column(db.String, unique=True)
+    secondary_email = db.Column(db.String, unique=True)
+    password = db.Column(db.String, nullable=False)
+    image_file = db.Column(db.String, nullable=False,
                            default='default.png')
-    motto = db.Column(db.String())
-    bio = db.Column(db.String())
-    birthday = db.Column(db.Date())
-    rank = db.Column(db.String(), nullable=False,
+    motto = db.Column(db.String)
+    bio = db.Column(db.String)
+    birthday = db.Column(db.Date)
+    rank = db.Column(db.String, nullable=False,
                      default='user')
-    telephone_number = db.Column(db.String())
+    tasks_completed = db.Column(db.Integer,
+                                default=0)
+    tasks_in_progress = db.Column(db.Integer,
+                                  default=0)
+    tasks_failed = db.Column(db.Integer,
+                             default=0)
+    telephone_number = db.Column(db.String)
     tasks = db.relationship('Tasks', backref='user')
 
     def get_reset_token(self, expires_sec=1800):
@@ -51,11 +57,12 @@ class User(db.Model, UserMixin):
 class Tasks(db.Model):
     __tablename__ = "tasks"
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(20), nullable=False)
+    name = db.Column(db.String, nullable=False)
     min_value = db.Column(db.Integer, nullable=False)
     max_value = db.Column(db.Integer, nullable=False)
     value = db.Column(db.Integer, nullable=False)
-    start_date = db.Column(db.String(20), nullable=False)
-    end_date = db.Column(db.String(20), nullable=False)
-    public = db.Column(db.String(20), nullable=False)
+    repeat = db.Column(db.String, nullable=False)
+    start_date = db.Column(db.DateTime, nullable=False)
+    end_date = db.Column(db.DateTime, nullable=False)
+    public = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

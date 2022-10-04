@@ -1,12 +1,10 @@
-from cgitb import text
-from urllib.parse import uses_relative
 from __init__ import bcrypt, db
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
-from models import User
+from models import User, Tasks
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
-                               ResetPasswordForm, UpdateAccountInfoForm)
+                               ResetPasswordForm, UpdateAccountInfoForm, CreateTaskForm)
 from routes.main.utils import save_picture, send_reset_email
 
 main = Blueprint("main", __name__)
@@ -17,9 +15,17 @@ def homepage():
     return render_template("homepage.html")
 
 
-@main.route("/your_tasks", methods=["GET", "POST"])
-def your_tasks():
-    return render_template("your_tasks.html")
+@main.route("/profile", methods=["GET", "POST"])
+def profile():
+    if not current_user.is_authenticated:
+        flash("You need to be logged in to view this page", "warning")
+        return redirect(url_for("main.login"))
+
+    form = CreateTaskForm()
+
+    tasks = User.query.get(int(current_user.id)).tasks
+
+    return render_template("profile.html", tasks=tasks, form=form)
 
 
 @main.route("/task_stats", methods=["GET", "POST"])
@@ -36,18 +42,20 @@ def leaderboards():
 @main.route("/search/<username>", methods=["GET", "POST"])
 def search(username: str = ""):
     if username:
+        total_results = User.query.filter(User.username.like(
+            '%' + username + '%')).count()
         users = User.query.filter(User.username.like(
             '%' + username + '%')).limit(10).all()
         if users:
-            return render_template("search.html", users=users)
+            return render_template("search.html", users=users, total_results=total_results)
         else:
             flash("No one with that username exists", "warning")
     return render_template("search.html")
 
 
-@main.route("/account/<username>", methods=["GET", "POST"])
-def user_account(username: str = ""):
-    return render_template("user_account.html")
+@main.route("/profile/<username>", methods=["GET", "POST"])
+def other_profile(username: str = ""):
+    return render_template("profile.html")
 
 
 @main.route("/login", methods=["GET", "POST"])
@@ -131,8 +139,8 @@ def reset_token(token):
     return render_template('reset_token.html', title='Reset Password', form=form)
 
 
-@main.route("/account", methods=["GET", "POST"])
-def account():
+@main.route("/account_settings", methods=["GET", "POST"])
+def account_settings():
     if not current_user.is_authenticated:
         flash("You need to be logged in to view this page", "warning")
         return redirect(url_for("main.login"))
@@ -174,8 +182,8 @@ def account():
         if refresh_flag:
             db.session.commit()
             db.session.remove()
-            flash('Your account has been updated!', 'success')
-            return redirect(url_for('main.account'))
+            flash('Your account settings has been updated!', 'success')
+            return redirect(url_for('main.account_settings'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
@@ -185,4 +193,4 @@ def account():
         form.birthday.data = current_user.birthday
         form.telephone_number.data = current_user.telephone_number
 
-    return render_template('account.html', title='Account Info', form=form)
+    return render_template('account_settings.html', title='Account Info', form=form)

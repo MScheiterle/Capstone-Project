@@ -16,9 +16,9 @@
             <h2>Start Creating Tasks Now!</h2>
           </a>
           {% else %}
-          <a href="{{ url_for('main.your_tasks') }}" class="item">
+          <a href="{{ url_for('main.profile') }}" class="item">
             <i class="fa-solid fa-list-check"></i>
-            <h2>Your Tasks</h2>
+            <h2>Profile</h2>
           </a>
           {% endif %}
           <a href="{{ url_for('main.search') }}" class="item">

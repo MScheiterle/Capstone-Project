@@ -1,0 +1,15 @@
+{% extends "layout.html" %} {% block content %}
+<form method="POST" action="" enctype="multipart/form-data">
+  {{ form.hidden_tag() }}
+  <fieldset class="form-group">
+    <div class="profile-header">
+      <img
+        class="rounded-circle"
+        src="/static/assets/user_images/{{ current_user.image_file }}"
+        height=""
+      />
+    </div>
+  </fieldset>
+</form>
+{{ current_user.username }} {% for task in tasks %} {{ task.name }} {% endfor %}
+{% endblock %}
