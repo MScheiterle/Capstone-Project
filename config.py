@@ -61,6 +61,7 @@ def create_dev_tables():
                                     user_id integer NOT NULL,
                                     start_date text NOT NULL,
                                     end_date text NOT NULL,
+                                    status text NOT NULL,
                                     public text NOT NULL,
                                     FOREIGN KEY (user_id) REFERENCES users (id)
                                 );"""

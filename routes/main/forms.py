@@ -3,7 +3,7 @@ from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
 from models import User
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, SelectField
 from wtforms.validators import (DataRequired, Email, EqualTo, Length,
                                 ValidationError, Optional)
 
@@ -15,7 +15,7 @@ class RegistrationForm(FlaskForm):
     email = StringField('Email',
                         validators=[Email()])
     password = PasswordField('Password', validators=[
-                             DataRequired(), Length(min=8)])
+        DataRequired(), Length(min=8)])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Sign Up')
@@ -37,6 +37,14 @@ class RegistrationForm(FlaskForm):
                     'That email is taken. Please choose a different one.')
 
 
+class ToDoForm(FlaskForm):
+    name = StringField('Name', validators=[DataRequired()])
+    end_date = DateField('Due Date', validators=[DataRequired()])
+    start_date = DateField('Start Date', validators=[DataRequired()])
+    status = SelectField('Status', choices=[('Complete', 'Complete'), ('Not Started', 'Not Started ')])
+    submit = SubmitField('Add Task')
+
+
 class LoginForm(FlaskForm):
     """ Defines a login form """
     username = StringField('Username',
@@ -49,7 +57,7 @@ class LoginForm(FlaskForm):
 class ResetPasswordForm(FlaskForm):
     """ Defines an update password form """
     password = PasswordField('Password', validators=[
-                             DataRequired(), Length(min=12)])
+        DataRequired(), Length(min=12)])
     confirm_password = PasswordField('Confirm Password',
                                      validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Reset Password')
@@ -86,9 +94,9 @@ class UpdateAccountInfoForm(FlaskForm):
     username = StringField('Username',
                            validators=[Length(min=2, max=20)])
     email = StringField('Email', validators=[
-                        Optional(), Email(), Length(min=0, max=80)])
+        Optional(), Email(), Length(min=0, max=80)])
     picture = FileField('Update Profile Picture', validators=[Optional(),
-                        FileAllowed(['jpg', 'png', 'jpeg'])])
+                                                              FileAllowed(['jpg', 'png', 'jpeg'])])
     motto = TextAreaField('Motto',
                           validators=[Optional(), Length(min=0, max=200)])
     bio = TextAreaField('Bio',
@@ -116,9 +124,3 @@ class UpdateAccountInfoForm(FlaskForm):
             if user:
                 raise ValidationError(
                     'That email is taken. Please choose a different one.')
-
-            class TaskForm(FlaskForm):
-                """ Define the registartion form """
-                tasks = StringField('Tasks',
-                                    validators=[DataRequired()])
-                submit = SubmitField('Enter')

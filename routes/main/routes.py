@@ -1,13 +1,37 @@
 from __init__ import bcrypt, db
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
-from models import User
+from models import User, Tasks
+
+
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
-                               ResetPasswordForm, UpdateAccountInfoForm)
+                               ResetPasswordForm, UpdateAccountInfoForm, ToDoForm)
 import routes.main.utils
 
 main = Blueprint("main", __name__)
+
+@main.route('/create_task', methods = ['POST','GET'])
+def add_tasks():
+    form = ToDoForm()
+    if request.method == 'GET':
+        return render_template('create_task.html', form=form)
+    if request.method == 'POST':
+        user = current_user
+        if form.validate_on_submit:
+            todo = Tasks(name=form.name.data,status =form.status.data,
+                        end_date =form.end_date.data,  start_date=form.start_date.data, user_id = user.id,  min_value=0,  max_value=0, value=0, public=0)
+            db.session.add(todo)
+            db.session.commit()
+            return redirect(url_for("main.add_tasks"))
+            return render_template('/create_task.html', title="CreateTask", form=form)
+
+
+
+
+
+
+
 
 
 @main.route("/", methods=["GET", "POST"])
@@ -15,9 +39,10 @@ def homepage():
     return render_template("homepage.html")
 
 
-@main.route("/create_tasks", methods=["GET", "POST"])
-def homepage0():
-    return render_template("create_task.html")
+@main.route("/create_task", methods=["GET", "POST"])
+def homepage0(tasks: str = ""):
+    tasks = request.form.get("tasks")
+    return render_template("create_task.html", tasks=tasks)
 
 
 @main.route("/your_tasks", methods=["GET", "POST"])

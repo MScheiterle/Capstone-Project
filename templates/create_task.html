@@ -1,3 +1,30 @@
+{% extends 'layout.html'%}
+{% block content%}
+<section class="container">
+   <div class="row">
+      <div class="col" a>
+         <form method="POST" action="">
+            <p>
+               {{ form.name.label }}<br>
+               {{ form.name(size =32) }}
+            </p>
+            <p>
+               {{ form.end_date.label }}<br>
+               {{ form.end_date(size=32) }}
+            </p>
+               <p>
+               {{ form.start_date.label }}<br>
+               {{ form.start_date(size=32) }}
+            </p>
+            <p>
+               {{ form.status.label }}<br>
+               {{ form.status() }}
+            </p>
 
-{% extends "layout.html" %} {% block elements%}
-{% endblock %}
+
+            <p>{{ form.submit() }}</p>
+         </form>
+      </div>
+   </div>
+</section>
+{% endblock%}
