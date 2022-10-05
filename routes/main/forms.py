@@ -1,9 +1,10 @@
+from unicodedata import name
 from __init__ import bcrypt
 from flask_login import current_user
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileAllowed, FileField
 from models import User
-from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, TelField, DateTimeField
+from wtforms import BooleanField, PasswordField, StringField, SubmitField, DateField, TextAreaField, TelField, DateTimeField, IntegerField, RadioField
 from wtforms.validators import (DataRequired, Email, EqualTo, Length,
                                 ValidationError, Optional)
 
@@ -129,14 +130,30 @@ class UpdateAccountInfoForm(FlaskForm):
                     'That telephone number is taken. Please choose a different one.')
 
 
-class CreateTaskForm(FlaskForm):
+class TaskForm(FlaskForm):
     name = StringField('Task Name',
-                       validators=[DataRequired(), Length(min=4, max=100)])
-    repeat = BooleanField('Repeat this task? (Daily, Weekly, Monthly)',
-                          validators=[DataRequired()])
+                       validators=[Optional(), Length(min=4, max=100)])
+    min_value = IntegerField('Starting Value',
+                             validators=[Optional()])
+    max_value = IntegerField('Ending Value',
+                             validators=[Optional()])
+    value = IntegerField('Pre-Set Value',
+                         validators=[Optional()])
+    repeat = RadioField('Repeat this task? (Daily, Weekly, Monthly)',
+                        validators=[Optional()], choices=[("true", "Repeat"), ("flase", "Dont Repeat")])
     start_date = DateTimeField('Start Date',
-                               validators=[DataRequired()])
+                               validators=[Optional()])
     end_date = DateTimeField('End Date',
-                             validators=[DataRequired()])
-    public = BooleanField('Do you want this task to be public?',
-                          validators=[DataRequired()])
+                             validators=[Optional()])
+    public = RadioField('Do you want this task to be public?',
+                        validators=[Optional()], choices=[("true", "Public"), ("flase", "Private")])
+
+    def validate_min_value(self, min_value):
+        if min_value.data >= self.max_value.data:
+            raise ValidationError(
+                'Starting value must be less than ending value.')
+
+    def validate_max_value(self, max_value):
+        if max_value.data <= self.min_value.data:
+            raise ValidationError(
+                'Ending value must be greater than starting value.')

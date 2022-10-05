@@ -64,5 +64,6 @@ class Tasks(db.Model):
     repeat = db.Column(db.String, nullable=False)
     start_date = db.Column(db.DateTime, nullable=False)
     end_date = db.Column(db.DateTime, nullable=False)
+    status = db.Column(db.String, nullable=False)
     public = db.Column(db.String, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))

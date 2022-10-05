@@ -45,6 +45,17 @@ def populate_db(conn):
     word_site = "https://www.mit.edu/~ecprice/wordlist.10000"
     response = requests.get(word_site)
     WORDS = [x.decode('utf-8') for x in response.content.splitlines()]
+    options = ["Walk Dog", "Do 100 Pushups", "Commit Code"]
+    
+    now = datetime.datetime.now()
+    one_day = datetime.timedelta(days=1)
+    two_days = datetime.timedelta(days=2)
+
+    in_progress_dates = [now-one_day, now+one_day]
+    yet_to_start_dates = [now+one_day, now+two_days]
+    past_due_dates = [now-two_days, now-one_day]
+
+    dates = [in_progress_dates, yet_to_start_dates, past_due_dates]
 
     bcrypt = Bcrypt()
 
@@ -63,7 +74,7 @@ def populate_db(conn):
             conn, "INSERT INTO user(username, email, password) VALUES(?, ?, ?)", random_username, random_email, random_password)
         for y in range(3):
             execute_sql(
-                conn, "INSERT INTO tasks(name, min_value, max_value, value, repeat, start_date, end_date, public, user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)", f'task_{y}', 0, 100, 50, 'false', datetime.datetime.now(), datetime.datetime.now(), 'true', x)
+                conn, "INSERT INTO tasks(name, min_value, max_value, value, repeat, start_date, end_date, public, status, user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", options[y], 0, 100, 50, 'false', dates[y][0], dates[y][1], 'true', 'in_progress', x)
 
     conn.commit()
 
@@ -98,6 +109,7 @@ def create_dev_tables():
                                     start_date text NOT NULL,
                                     end_date text NOT NULL,
                                     public text NOT NULL,
+                                    status text NOT NULL,
                                     FOREIGN KEY (user_id) REFERENCES users (id)
                                 );"""
 

@@ -4,7 +4,7 @@ from flask_login import current_user, login_user, logout_user
 from models import User, Tasks
 
 from routes.main.forms import (LoginForm, RegistrationForm, RequestResetForm,
-                               ResetPasswordForm, UpdateAccountInfoForm, CreateTaskForm)
+                               ResetPasswordForm, UpdateAccountInfoForm, TaskForm)
 from routes.main.utils import save_picture, send_reset_email
 
 main = Blueprint("main", __name__)
@@ -21,21 +21,29 @@ def profile():
         flash("You need to be logged in to view this page", "warning")
         return redirect(url_for("main.login"))
 
-    form = CreateTaskForm()
+    form = TaskForm()
 
     tasks = User.query.get(int(current_user.id)).tasks
 
+    if form.validate_on_submit():
+        task_id = request.form['task_id']
+        task = Tasks.query.get(int(task_id))
+
+        task.name = form.name.data
+        task.min_value = form.min_value.data
+        task.max_value = form.max_value.data
+        task.value = form.value.data
+        task.repeat = form.repeat.data
+        task.start_date = form.start_date.data
+        task.end_date = form.end_date.data
+        task.public = form.public.data
+        
+        db.session.commit()
+        db.session.remove()
+        flash('Your task has been updated!', 'success')
+        return redirect(url_for('main.profile'))
+
     return render_template("profile.html", tasks=tasks, form=form)
-
-
-@main.route("/task_stats", methods=["GET", "POST"])
-def task_stats():
-    return render_template("task_stats.html")
-
-
-@main.route("/leaderboards", methods=["GET", "POST"])
-def leaderboards():
-    return render_template("leaderboards.html")
 
 
 @main.route("/search", methods=["GET", "POST"])

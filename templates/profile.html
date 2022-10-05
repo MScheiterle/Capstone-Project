@@ -1,15 +1,232 @@
 {% extends "layout.html" %} {% block content %}
+<div class="profile-header">
+  <img
+    class="rounded-circle"
+    src="/static/assets/user_images/{{ current_user.image_file }}"
+  />
+  <div class="profile-info">
+    <h1>{{ current_user.username }}</h1>
+    {% if current_user.motto %}
+    <h2><i class="fa-regular fa-comment"></i>{{ current_user.motto }}</h2>
+    {% endif %} {% if current_user.birthday %}
+    <h2><i class="fa-solid fa-cake-candles"></i>{{ current_user.birthday }}</h2>
+    {% endif %} {% if current_user.bio %}
+    <h2><i class="fa-solid fa-quote-right"></i>{{ current_user.bio }}</h2>
+    {% endif %}
+  </div>
+</div>
+<div class="create-task-button">
+  <i class="fa-solid fa-plus"></i> Create A ToDoo!
+</div>
+<div class="profile-tasks">
+  <div class="task-section section public-info-section">
+    <legend><i class="fa-regular fa-hourglass-half"></i>In Progress</legend>
+    {% for task in tasks %} {% if task.status == 'in_progress' %}
+    <button
+      type="button"
+      class="modalTaskButton"
+      data-bs-toggle="modal"
+      data-bs-target="#Modal"
+      task-id="{{task.id}}"
+      name="{{task.name}}"
+      min-value="{{task.min_value}}"
+      max-value="{{task.max_value}}"
+      value="{{task.value}}"
+      repeat="{{task.repeat}}"
+      start-date="{{task.start_date}}"
+      end-date="{{task.end_date}}"
+      public="{{task.public}}"
+    >
+      <div class="task">
+        <div class="task-top">
+          <h3>{{ task.name }}</h3>
+        </div>
+        <div class="task-bottom">
+          <div
+            class="task-timer"
+            start-time="{{task.start_date}}"
+            end-time="{{task.end_date}}"
+          ></div>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="70"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="width: {{(task.value/task.max_value)*100}}%"
+            >
+              {{task.value}}/{{task.max_value}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
+    {% endif %} {% endfor %}
+  </div>
+  <div class="task-section section public-info-section">
+    <legend><i class="fa-regular fa-circle-check"></i>Completed</legend>
+    {% for task in tasks %} {% if task.status == 'completed' %}
+    <div class="task">{{ task.name }}</div>
+    {% endif %} {% endfor %}
+  </div>
+  <div class="task-section section public-info-section">
+    <legend><i class="fa-regular fa-circle-xmark"></i>Failed</legend>
+    {% for task in tasks %} {% if task.status == 'failed' %}
+    <div class="task">{{ task.name }}</div>
+    {% endif %} {% endfor %}
+  </div>
+</div>
+{% endblock %} {% block extra_content %}
 <form method="POST" action="" enctype="multipart/form-data">
   {{ form.hidden_tag() }}
   <fieldset class="form-group">
-    <div class="profile-header">
-      <img
-        class="rounded-circle"
-        src="/static/assets/user_images/{{ current_user.image_file }}"
-        height=""
-      />
+    <div
+      class="modal fade"
+      id="Modal"
+      tabindex="-1"
+      aria-labelledby="ModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="ModalLabel">New message</h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form>
+              <div class="mb-3">
+                <input
+                  style="display: none"
+                  type="text"
+                  name="task_id"
+                  id="taskIDPassthrough"
+                  value=""
+                />
+                {{ form.name.label }}
+                <div class="form-group name input-group">
+                  {% if form.name.errors %} {{ form.name(class="form-control
+                  is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.name.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.name(class="form-control") }} {% endif %}
+                </div>
+
+                {{ form.min_value.label }}
+                <div class="form-group min_value input-group">
+                  {% if form.min_value.errors %} {{
+                  form.min_value(class="form-control is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.min_value.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.min_value(class="form-control") }} {% endif
+                  %}
+                </div>
+
+                {{ form.max_value.label }}
+                <div class="form-group max_value input-group">
+                  {% if form.max_value.errors %} {{
+                  form.max_value(class="form-control is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.max_value.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.max_value(class="form-control") }} {% endif
+                  %}
+                </div>
+
+                {{ form.value.label }}
+                <div class="form-group value input-group">
+                  {% if form.value.errors %} {{ form.value(class="form-control
+                  is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.value.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.value(class="form-control") }} {% endif %}
+                </div>
+
+                {{ form.repeat.label }}
+                <div class="form-group repeat input-group radio-field">
+                  {% if form.repeat.errors %} {{ form.repeat(class="form-control
+                  is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.repeat.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.repeat(class="form-control") }} {% endif %}
+                </div>
+
+                {{ form.start_date.label }}
+                <div class="form-group start_date input-group">
+                  {% if form.start_date.errors %} {{
+                  form.start_date(class="form-control is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.start_date.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.start_date(class="form-control") }} {%
+                  endif %}
+                </div>
+
+                {{ form.end_date.label }}
+                <div class="form-group end_date input-group">
+                  {% if form.end_date.errors %} {{
+                  form.end_date(class="form-control is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.end_date.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.end_date(class="form-control") }} {% endif
+                  %}
+                </div>
+
+                {{ form.public.label }}
+                <div class="form-group public input-group radio-field">
+                  {% if form.public.errors %} {{ form.public(class="form-control
+                  is-invalid") }}
+
+                  <div class="invalid-feedback">
+                    {% for error in form.public.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                  </div>
+                  {% else %} {{ form.public(class="form-control") }} {% endif %}
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" type="submit">Update Task</button>
+          </div>
+        </div>
+      </div>
     </div>
   </fieldset>
 </form>
-{{ current_user.username }} {% for task in tasks %} {{ task.name }} {% endfor %}
+<!-- Custom Js -->
+<script src="/static/js/profile.js" type="text/javascript"></script>
 {% endblock %}
