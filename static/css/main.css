@@ -536,14 +536,15 @@ ul.dropdown-menu {
 }
 
 .create-task-button {
-  display: flex;
-  flex-direction: row;
+  color: #fff;
+  border: 1px solid var(--quaternary-color);
   justify-content: center;
   align-items: center;
   height: 40px;
   border-radius: 5px;
   margin-top: 20px;
   background-color: var(--quaternary-color);
+  width: 100%;
 }
 
 .create-task-button:hover {

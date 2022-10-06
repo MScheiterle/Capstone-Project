@@ -10,7 +10,7 @@ def load_user(user_id):
     """ For use in 'current_user' alone, to assign the 'current_user'
     to a variable and edit the user data use 'User.query.get' """
     user = User.query.get(int(user_id))
-    db.session.remove()  # Closes the session to prevent max session overflow
+    #db.session.remove()  # Closes the session to prevent max session overflow
     return user
 
 

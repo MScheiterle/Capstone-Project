@@ -15,9 +15,18 @@
     {% endif %}
   </div>
 </div>
-<div class="create-task-button">
-  <i class="fa-solid fa-plus"></i> Create A ToDoo!
-</div>
+<form method="POST" action="" enctype="multipart/form-data">
+  <input
+    style="display: none"
+    type="text"
+    name="create_task"
+    id="createTakPassthrough"
+    value="true"
+  />
+  <button class="create-task-button" type="submit">
+    <i class="fa-solid fa-plus"></i> Create A ToDoo!
+  </button>
+</form>
 <div class="profile-tasks">
   <div class="task-section section public-info-section">
     <legend><i class="fa-regular fa-hourglass-half"></i>In Progress</legend>
@@ -67,13 +76,63 @@
   <div class="task-section section public-info-section">
     <legend><i class="fa-regular fa-circle-check"></i>Completed</legend>
     {% for task in tasks %} {% if task.status == 'completed' %}
-    <div class="task">{{ task.name }}</div>
+    <button type="button">
+      <div class="task">
+        <div class="task-top">
+          <h3>{{ task.name }}</h3>
+        </div>
+        <div class="task-bottom">
+          <div
+            class="task-timer"
+            start-time="{{task.start_date}}"
+            end-time="{{task.end_date}}"
+          ></div>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="70"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="width: {{(task.value/task.max_value)*100}}%"
+            >
+              {{task.value}}/{{task.max_value}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
     {% endif %} {% endfor %}
   </div>
   <div class="task-section section public-info-section">
     <legend><i class="fa-regular fa-circle-xmark"></i>Failed</legend>
     {% for task in tasks %} {% if task.status == 'failed' %}
-    <div class="task">{{ task.name }}</div>
+    <button type="button">
+      <div class="task">
+        <div class="task-top">
+          <h3>{{ task.name }}</h3>
+        </div>
+        <div class="task-bottom">
+          <div
+            class="task-timer"
+            start-time="{{task.start_date}}"
+            end-time="{{task.end_date}}"
+          ></div>
+          <div class="progress">
+            <div
+              class="progress-bar"
+              role="progressbar"
+              aria-valuenow="70"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              style="width: {{(task.value/task.max_value)*100}}%"
+            >
+              {{task.value}}/{{task.max_value}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </button>
     {% endif %} {% endfor %}
   </div>
 </div>

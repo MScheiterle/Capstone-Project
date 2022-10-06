@@ -1,6 +1,3 @@
-// Convert string in ISO8601 format to date object
-// e.g. 2013-02-08T02:40:00Z
-//      2022-10-05 03:17:35.375637
 function isoToObj(s) {
   var b = s.split(/[- .:]/i);
 
@@ -53,55 +50,57 @@ function main() {
 
 var interval = setInterval(main, 1000); // 1000 ms = 1 second
 
-const Modal = document.getElementById("Modal");
-Modal.addEventListener("show.bs.modal", (event) => {
-  // Button that triggered the modal
-  const button = event.relatedTarget;
+try {
+  const Modal = document.getElementById("Modal");
+  Modal.addEventListener("show.bs.modal", (event) => {
+    // Button that triggered the modal
+    const button = event.relatedTarget;
 
-  const id = button.getAttribute("task-id");
-  const name = button.getAttribute("name");
-  const minValue = button.getAttribute("min-value");
-  const maxValue = button.getAttribute("max-value");
-  const value = button.getAttribute("value");
-  const repeat = button.getAttribute("repeat");
-  const startDate = button.getAttribute("start-date");
-  const endDate = button.getAttribute("end-date");
-  const public = button.getAttribute("public");
+    const id = button.getAttribute("task-id");
+    const name = button.getAttribute("name");
+    const minValue = button.getAttribute("min-value");
+    const maxValue = button.getAttribute("max-value");
+    const value = button.getAttribute("value");
+    const repeat = button.getAttribute("repeat");
+    const startDate = button.getAttribute("start-date");
+    const endDate = button.getAttribute("end-date");
+    const public = button.getAttribute("public");
 
-  const idField = Modal.querySelector("#taskIDPassthrough");
-  const nameField = Modal.querySelector("#name");
-  const minValueField = Modal.querySelector("#min_value");
-  const maxValueField = Modal.querySelector("#max_value");
-  const valueField = Modal.querySelector("#value");
-  const repeat0Field = Modal.querySelector("#repeat-0");
-  const repeat1Field = Modal.querySelector("#repeat-1");
-  const startDateField = Modal.querySelector("#start_date");
-  const endDateField = Modal.querySelector("#end_date");
-  const public0Field = Modal.querySelector("#public-0");
-  const public1Field = Modal.querySelector("#public-1");
+    const idField = Modal.querySelector("#taskIDPassthrough");
+    const nameField = Modal.querySelector("#name");
+    const minValueField = Modal.querySelector("#min_value");
+    const maxValueField = Modal.querySelector("#max_value");
+    const valueField = Modal.querySelector("#value");
+    const repeat0Field = Modal.querySelector("#repeat-0");
+    const repeat1Field = Modal.querySelector("#repeat-1");
+    const startDateField = Modal.querySelector("#start_date");
+    const endDateField = Modal.querySelector("#end_date");
+    const public0Field = Modal.querySelector("#public-0");
+    const public1Field = Modal.querySelector("#public-1");
 
-  idField.value = id;
-  nameField.value = name;
-  minValueField.value = minValue;
-  maxValueField.value = maxValue;
-  valueField.value = value;
+    idField.value = id;
+    nameField.value = name;
+    minValueField.value = minValue;
+    maxValueField.value = maxValue;
+    valueField.value = value;
 
-  if (repeat === "true") {
-    repeat0Field.checked = true;
-    repeat1Field.checked = false;
-  } else {
-    repeat1Field.checked = true;
-    repeat0Field.checked = false;
-  }
+    if (repeat === "true") {
+      repeat0Field.checked = true;
+      repeat1Field.checked = false;
+    } else {
+      repeat1Field.checked = true;
+      repeat0Field.checked = false;
+    }
 
-  startDateField.value = startDate.split(".")[0];
-  endDateField.value = endDate.split(".")[0];
+    startDateField.value = startDate.split(".")[0];
+    endDateField.value = endDate.split(".")[0];
 
-  if (public === "true") {
-    public0Field.checked = true;
-    public1Field.checked = false;
-  } else {
-    public1Field.checked = true;
-    public0Field.checked = false;
-  }
-});
+    if (public === "true") {
+      public0Field.checked = true;
+      public1Field.checked = false;
+    } else {
+      public1Field.checked = true;
+      public0Field.checked = false;
+    }
+  });
+} catch {}

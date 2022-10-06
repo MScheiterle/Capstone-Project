@@ -1,3 +1,4 @@
+import datetime
 from __init__ import bcrypt, db
 from flask import Blueprint, flash, redirect, render_template, request, url_for
 from flask_login import current_user, login_user, logout_user
@@ -25,6 +26,33 @@ def profile():
 
     tasks = User.query.get(int(current_user.id)).tasks
 
+    for task in tasks:
+        if task.end_date < datetime.datetime.now():
+            if task.value < task.max_value:
+                task.status = 'failed'
+            elif task.value >= task.max_value:
+                task.status = 'completed'
+
+    db.session.commit()
+
+    if request.method == 'POST':
+        try:
+            create_task = request.form['create_task']
+
+            if create_task == 'true':
+                new_task = Tasks(name="New Task", min_value=0, max_value=1, value=0,
+                                 repeat="false", start_date=datetime.datetime.now(),
+                                 end_date=datetime.datetime.now()+datetime.timedelta(days=1),
+                                 status="in_progress", public="true", user_id=current_user.id)
+
+                db.session.add(new_task)
+                db.session.commit()
+                db.session.remove()
+                flash('A blank task has been created', 'success')
+                return redirect(url_for('main.profile'))
+        except Exception as e:
+            pass
+
     if form.validate_on_submit():
         task_id = request.form['task_id']
         task = Tasks.query.get(int(task_id))
@@ -37,7 +65,7 @@ def profile():
         task.start_date = form.start_date.data
         task.end_date = form.end_date.data
         task.public = form.public.data
-        
+
         db.session.commit()
         db.session.remove()
         flash('Your task has been updated!', 'success')
@@ -63,7 +91,20 @@ def search(username: str = ""):
 
 @main.route("/profile/<username>", methods=["GET", "POST"])
 def other_profile(username: str = ""):
-    return render_template("profile.html")
+
+    user = User.query.filter_by(username=username).first()
+    tasks = User.query.get(int(user.id)).tasks
+
+    for task in tasks:
+        if task.end_date < datetime.datetime.now():
+            if task.value < task.max_value:
+                task.status = 'failed'
+            elif task.value >= task.max_value:
+                task.status = 'completed'
+
+    db.session.commit()
+
+    return render_template("other_profile.html", user=user, tasks=tasks)
 
 
 @main.route("/login", methods=["GET", "POST"])
